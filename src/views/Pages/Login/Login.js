@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { userActions } from "../../../_store/_actions";
@@ -14,7 +14,7 @@ class Login extends Component {
   constructor(props) {
     super(props)
     //reset status login
-   //this.props.dispatch(userActions.logout())
+    this.props.dispatch(userActions.logout())
 
     this.state = {
       email: '',
@@ -22,10 +22,15 @@ class Login extends Component {
       submitted: false
     }
 
+
     this.handleChange = this.handleChange.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+
+
   }
+
+
 
   handleChange(e) {
     const { name, value } = e.target;
@@ -40,9 +45,10 @@ class Login extends Component {
     const { dispatch } = this.props;
     if (email && senha) {
       dispatch(userActions.login(email, senha));
+      this.props.history.push("/");
     }
+
   }
-  login = () => { }
 
 
   render() {
@@ -52,6 +58,7 @@ class Login extends Component {
 
     return (
       <div className="app flex-row align-items-center">
+
         <Container>
           <Row className="justify-content-center">
             <Col md="8">
@@ -79,7 +86,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Senha" name="senha" 
+                        <Input type="password" placeholder="Senha" name="senha"
                           value={senha} onChange={this.handleChange} />
                         {submitted && !senha &&
                           <div className="help-block">Digite sua senha</div>
@@ -120,11 +127,13 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { loggingIn } = state.authentication;
+  const { loggingIn, user } = state.authentication;
   return {
-    loggingIn
+    loggingIn,
+    user
   };
 }
 
-const connectedLoginPage = connect(mapStateToProps)(Login);
-export { connectedLoginPage as Login }; 
+//const connectedLoginPage = connect(mapStateToProps)(Login);
+//export { connectedLoginPage as Login }; 
+export default connect(mapStateToProps)(Login);

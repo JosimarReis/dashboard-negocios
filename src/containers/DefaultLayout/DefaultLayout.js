@@ -2,6 +2,10 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
+import { connect } from 'react-redux';
+import { userActions } from "../../_store/_actions";
+
+
 import {
   AppAside,
   AppBreadcrumb,
@@ -25,12 +29,15 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  loading = () => <div className="animated fadeIn pt-1 text-center">Carregando...</div>
 
   signOut(e) {
     e.preventDefault()
+    this.props.dispatch(userActions.logout());
     this.props.history.push('/login')
   }
+
+
 
   render() {
     return (
@@ -88,4 +95,17 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+//export default DefaultLayout;
+
+function mapStateToProps(state) {
+  const { users, authentication } = state;
+  const { user } = authentication;
+  return {
+    user,
+    users
+  };
+}
+
+//let connectedHomePage = connect(mapStateToProps)(Dashboard);
+//export { connectedHomePage as Dashboard };
+export default connect(mapStateToProps)(DefaultLayout);

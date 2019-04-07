@@ -37,7 +37,6 @@ function getAll() {
 
     return axios.get(`/usuarios/all`, requestOptions)
         .then(users =>{
-            console.log('dados'+ JSON.stringify(users))
             return users
         })
 }
