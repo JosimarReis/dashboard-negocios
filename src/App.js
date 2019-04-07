@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-
-import { HashRouter, Route, Router, Switch } from 'react-router-dom';
+import { HashRouter, Route,  Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -18,7 +17,7 @@ const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 
 // Pages
 const Login = React.lazy(() => import('./views/Pages/Login/Login'));
-const Dashboard = React.lazy(() => import('./views/Dashboard/Dashboard'));
+//const Dashboard = React.lazy(() => import('./views/Dashboard/Dashboard'));
 
 
 class App extends Component {
@@ -36,8 +35,8 @@ class App extends Component {
   // <Route path="/" name="Home" render={props => <DefaultLayout {...props} />} />
 
   render() {
-    const { alert } = this.props;
-    const currentUser = localStorage.getItem('user');
+   // const { alert } = this.props;
+    //const currentUser = localStorage.getItem('user');
 
     return (
       <HashRouter>
