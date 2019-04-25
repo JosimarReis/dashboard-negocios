@@ -64,6 +64,7 @@ class DefaultLayout extends Component {
                 <Switch>
                   {routes.map((route, idx) => {
                     return route.component ? (
+                      
                       <Route
                         key={idx}
                         path={route.path}

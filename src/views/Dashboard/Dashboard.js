@@ -55,6 +55,7 @@ function mapStateToProps(state) {
   };
 }
 
+
 //let connectedHomePage = connect(mapStateToProps)(Dashboard);
 //export { connectedHomePage as Dashboard };
 export default connect(mapStateToProps)(Dashboard);

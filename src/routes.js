@@ -34,13 +34,14 @@ const Colors = React.lazy(() => import('./views/Theme/Colors'));
 const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 
+
 // -----------------------------
 const Usuarios = React.lazy(() => import('./views/Users/Usuarios'));
+const Usuario = React.lazy(() => import('./views/Users/Usuario'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/', name: 'Dashboard', component: Dashboard },
+  { path: '/', exact: true, name: 'Home', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -78,7 +79,13 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/usuarios', exact: true,  name: 'Usuários', component: Usuarios },
+  {
+    path: '/usuarios', name: 'Usuários', component: Usuarios, routes: [
+      { path: '/usuarios/edit', exact: false, name: 'Edit Usuário', component: Usuario }
+    ]
+  }
+
+
 ];
 
 export default routes;

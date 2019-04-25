@@ -39,7 +39,7 @@ function UsuarioRow(props) {
 
 
 
-class Usuarios extends Component {
+class Produtos extends Component {
   componentDidMount() {
     this.props.onLoadUsers();
     this.showForm()

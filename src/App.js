@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import { HashRouter, Route,  Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { alertActions } from './_store/_actions';
 import { PrivateRoute } from './components/PrivateRoute';
 //import { Login } from './views/Pages/Login/Login';
 //import { Dashboard } from './views/Dashboard/Dashboard';
+import routes from './routes';
 
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
@@ -35,16 +36,29 @@ class App extends Component {
   // <Route path="/" name="Home" render={props => <DefaultLayout {...props} />} />
 
   render() {
-   // const { alert } = this.props;
+    // const { alert } = this.props;
     //const currentUser = localStorage.getItem('user');
-
     return (
       <HashRouter>
         <React.Suspense fallback={loading()}>
           <Switch history={history}>
 
-            <PrivateRoute exact path="/" component={DefaultLayout} />
-            <Route path="/login" component={Login} />
+          <Route exact path="/login" name="Login" render={props => <Login {...props} />} />
+
+          <PrivateRoute path="/" component={props => <DefaultLayout {...props} />} />
+
+
+            {routes.map((route, idx) => {
+               return <PrivateRoute
+                  key={idx}
+                  path={route.path}
+                  exact={route.exact}
+                  name={route.name}
+                  component={props => (
+                    <route.component {...props} />
+                  )} />
+
+              })}
 
           </Switch>
         </React.Suspense>
