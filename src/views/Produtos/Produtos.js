@@ -1,104 +1,78 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userActions } from "../../_store/_actions";
-
-import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import UsuarioForm from './UsuarioForm'
-
-
-function UsuarioRow(props) {
-  const usuario = props.usuario
-  const getBadge = (situacao) => {
-    return situacao === true ? 'success' : 'secondary'
-  }
-  return (
-    <tr key={usuario._id.toString()}>
-
-      <td>{usuario.nome}</td>
-      <td>{usuario.email}</td>
-      <td>{usuario.perfil === "ROLE_ADMIN" ? "Administrador" : "Usuário"}</td>
-      <td className="text-center"><Badge color={getBadge(usuario.situacao)}>{(usuario.situacao === true) ? 'Ativo' : 'Inativo'}</Badge></td>
-      <td className="text-right">
-        <Link to={`/usuarios/cadastrar`}>
-          <button className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
-        </Link>
-        <Link to={`/usuarios/alterar`} onClick={(usuario) => props.getUsuario(usuario._id)}>
-          <button className="btn-square btn btn-ghost-warning btn-sm" title="Alterar dados"><i className="fa fa-pencil"></i></button>
-        </Link>
-        <Link to={`/usuarios/alterar-senha`}>
-          <button className="btn-square btn btn-ghost-info btn-sm" title="Alterar Senha"><i className="fa fa-lock"></i></button>
-        </Link>
-        <Link to={`/usuarios/remover`}>
-          <button className="btn-square btn btn-ghost-danger btn-sm" title="Remover"><i className="fa fa-minus"></i></button>
-        </Link>
-      </td>
-    </tr>
-  )
-}
-
+import { produtosActions } from "../../_store/_actions";
+import Produto from './produto'
+import {
+  Alert, Card, CardBody, CardHeader, Col, Row
+} from 'reactstrap';
+import FormFiltros from './FormFiltros';
 
 
 class Produtos extends Component {
   componentDidMount() {
-    this.props.onLoadUsers();
-    this.showForm()
+    this.props.onLoadProdutos({ pagina: 1, limit: 30 })
+  }
+  submit = values => {
+    this.props.onSetFiltros(values)
+    //    this.props.onLoadProdutos(this.props.produto.filtros)
+
   }
 
-  showForm = () => {
-    this.props.onShowForm()
+  mudarPagina = (pagina) => {
+    this.props.onLoadProdutos({ pagina })
+    //this.props.onSetFiltros({pagina})
   }
-  getUsuario = (id) => {
-    let u = this.props.users.items.filter((usuario) => usuario._id === id)
-    return u
+
+  alterarSituacaoProduto = (produto, situacao) => {
+    produto.situacao = situacao
+    this.props.onAlterarProduto(produto);
   }
 
   render() {
+    const { produtos } = this.props
+    const { loading } = produtos
 
-    const { users, userFormShow } = this.props;
-    const usuarios = users.items
-    console.log('show form '+userFormShow)
-    let usuarioNOme = '';
-
-
+    const initialForm = {
+      listar: 'todos',
+      categorias: ['todos'],
+      marcas: ['todos'],
+      limit: 30,
+      order: 'asc',
+      pagina: 1
+    }
+    //    this.props.onSetFiltros(initialForm)
+    console.log(produtos)
     return (
       <div className="animated fadeIn">
         <Row>
-          <UsuarioForm show={true} />
-          <Col xl={10}>
+          <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> <strong className="card-title">Usuários</strong> |
-                 <button onClick={() => this.showForm()} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> novo</button>
-                {usuarioNOme}
+                <i className="fa fa-align-justify"></i> <strong className="card-title">Produtos</strong>
+
               </CardHeader>
               <CardBody>
-                {users.loading && <em>Loading users...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">Nome</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Perfil</th>
-                      <th scope="col">Situação</th>
-                      <th scope="col" className="text-center">#</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                    {usuarios &&
-                      usuarios.map((usuario, index) =>
-                        <UsuarioRow key={index} usuario={usuario} getUsuario={() => this.getUsuario} />
-                      )
-                    }
-                  </tbody>
-                </Table>
+                <FormFiltros onSubmit={this.submit} initialValues={initialForm}
+                  page={produtos.page}
+                  pages={produtos.pages}
+                  mudarPagina={this.mudarPagina}
+                />
               </CardBody>
             </Card>
           </Col>
         </Row>
+        <Row>
+          {loading ? 'carregando...' : ''}
 
+          {produtos.docs &&
+            produtos.docs.map((produto, index) => <Produto produto={produto}
+              alterarProduto={this.alterarSituacaoProduto}
+              key={produto._id} />)
+          }
+          {produtos.docs && <Alert color="info" xs="12">
+            Nenhum produto foi encontrado. Tente outro filtro!</Alert>
+          }
+        </Row>
       </div >
     )
   }
@@ -107,20 +81,19 @@ class Produtos extends Component {
 //export default Usuarios;
 
 function mapStateToProps(state) {
-  const { users, userFormShow } = state;
-
+  const { produtos } = state;
   return {
-    users,
-    userFormShow
+    produtos
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadUsers: () => dispatch(userActions.getAll()),
-    onShowForm: () => dispatch(userActions.showForm())
+    onLoadProdutos: (filtros) => dispatch(produtosActions.getProdutos(filtros)),
+    onSetFiltros: (filtros) => dispatch(produtosActions.setFiltros(filtros)),
+    onAlterarProduto: (produto) => dispatch(produtosActions.produtoUpdate(produto))
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Usuarios);
+export default connect(mapStateToProps, mapDispatchToProps)(Produtos);

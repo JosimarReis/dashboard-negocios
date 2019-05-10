@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -39,7 +39,7 @@ class App extends Component {
     // const { alert } = this.props;
     //const currentUser = localStorage.getItem('user');
     return (
-      <HashRouter>
+      <BrowserRouter>
         <React.Suspense fallback={loading()}>
           <Switch history={history}>
 
@@ -62,7 +62,7 @@ class App extends Component {
 
           </Switch>
         </React.Suspense>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

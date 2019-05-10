@@ -27,8 +27,10 @@ import { Login, Page404, Page500, Register } from './Pages';
 import { Colors, Typography } from './Theme';
 import Widgets from './Widgets';
 import Usuario from './Users/Usuarios'
+import Produtos from './Produtos/Produtos'
 
 export {
+  Produtos,
   Usuario,
   Badges,
   Typography,

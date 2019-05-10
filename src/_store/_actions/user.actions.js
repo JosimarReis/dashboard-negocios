@@ -1,6 +1,6 @@
 import { userConstants } from '../_constants';
 import { userService } from '../../_services';
-import { alertActions } from './';
+//import { alertActions } from './';
 import { history } from '../../_helpers';
 
 export const userActions = {
@@ -10,106 +10,119 @@ export const userActions = {
     showForm,
     userCreate,
     userUpdate,
-    userRemove
+    userRemove,
+    userUpdated,
+    pass
 };
 
 function login(email, senha) {
     return dispatch => {
-        dispatch(request({ email }));
 
         userService.login(email, senha)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push('/');
+                    dispatch({
+                        type: userConstants.USER_LOGIN,
+                        user
+                    })
                 },
-                error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-    };
-
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+                error => console.log(error)
+            )
+    }
 }
 
 function showForm() {
-    return { type: userConstants.USER_FORM_SHOW };
+    return dispatch => {
+        dispatch({ type: userConstants.USER_FORM_SHOW })
+    }
 }
-
+function pass() {
+    return dispatch => {
+        dispatch({ type: userConstants.USER_PASS })
+    }
+}
+function userUpdated(user) {
+    return dispatch => {
+        dispatch({ type: userConstants.USER_UPDATED, user })
+    }
+}
 function logout() {
-    userService.logout();
-    return { type: userConstants.LOGOUT };
+    return dispatch => {
+
+        userService.logout();
+        dispatch({ type: userConstants.USER_LOGOUT })
+    }
 }
 
 function getAll() {
     return dispatch => {
-        dispatch(request());
-
         userService.getAll()
             .then(
-                users => dispatch(success(users)),
-                error => dispatch(failure(error))
-            );
-    };
+                users => {
+                    dispatch({
+                        type: userConstants.USER_GETALL,
+                        users
+                    })
 
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+                },
+                error => console.log(error)
+            )
+    }
 }
-
 
 
 function userCreate(user) {
     return dispatch => {
-        dispatch(request(user))
-
+        dispatch({ type: userConstants.USER_FORM_SHOW })
         userService.usuarioCreate(user)
             .then(
-                user => dispatch(success(user)),
-                error => dispatch(failure(error))
+                user => {
+                    dispatch({
+                        type: userConstants.USER_CREATE,
+                        user
+                    })
+                    history.push('/usuarios')
+                },
+                error => console.log(error)
             )
     }
-    function request(user) { return { type: userConstants.USER_CREATE } }
-    function success(user) { return { type: userConstants.USERCREATE_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.USERCREATE_FAILURE, error } }
-
 }
 
 function userUpdate(user) {
     return dispatch => {
-        dispatch(request(user))
 
         userService.usuarioUpdate(user)
             .then(
-                user => dispatch(success(user)),
-                error => dispatch(failure(error))
+                user => {
+                    dispatch({
+                        type: userConstants.USER_UPDATE,
+                        user
+                    })
+                    history.push('/usuarios')
+
+                },
+                error => console.log(error)
             )
-
-
     }
-    function request(user) { return { type: userConstants.USER_UPDATE } }
-    function success(user) { return { type: userConstants.USERUPDATE_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.USERUPDATE_FAILURE, error } }
+
 
 }
 
+
 function userRemove(user) {
     return dispatch => {
-        dispatch(request(user))
 
         userService.usuarioRemove(user._id)
             .then(
-                success => dispatch(() => { return { type: userConstants.USERREMOVE_SUCCESS } }),
-                error => dispatch(failure(error))
+                success => {
+                    dispatch({
+                        type: userConstants.USER_REMOVE
+                    })
+                    history.push('/usuarios')
+
+                },
+                error => console.log(error)
             )
 
-
     }
-    function request(user) { return { type: userConstants.USER_REMOVE } }
-   // function success() { return { type: userConstants.USERREMOVE_SUCCESS } }
-    function failure(error) { return { type: userConstants.USERREMOVE_FAILURE, error } }
-
 }

@@ -361,6 +361,9 @@ class Forms extends Component {
                     <Col md="3">
                       <Label>Inline Checkboxes</Label>
                     </Col>
+
+
+                    
                     <Col md="9">
                       <FormGroup check inline>
                         <Input className="form-check-input" type="checkbox" id="inline-checkbox1" name="inline-checkbox1" value="option1" />

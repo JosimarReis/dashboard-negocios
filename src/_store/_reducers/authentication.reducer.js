@@ -5,20 +5,16 @@ const initialState = user ? { loggedIn: true, user } : {};
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
-    case userConstants.LOGIN_REQUEST:
+    case userConstants.USER_LOGIN:
       return {
         loggingIn: true,
         user: action.user
       };
-    case userConstants.LOGIN_SUCCESS:
+    case userConstants.USER_LOGOUT:
       return {
-        loggedIn: true,
-        user: action.user
+        loggingIn: false,
+        user: {}
       };
-    case userConstants.LOGIN_FAILURE:
-      return {};
-    case userConstants.LOGOUT:
-      return {};
     default:
       return state
   }

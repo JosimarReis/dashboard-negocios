@@ -5,98 +5,128 @@ import {
     CardHeader,
     Col,
     FormGroup,
-    Input,
     Label,
     Row,
+    CardFooter,
+    Button
 } from 'reactstrap';
-import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form'
 
-// import { Container } from './styles';
+let UsuarioForm = props => {
+    const { handleSubmit, show } = props
+    return (
+        show &&
+        <div className="animated fadeIn">
+            <form onSubmit={handleSubmit} className="form" >
+                <Col xs={12} sm={12}>
+                    <Card>
+                        <CardHeader>
+                            <strong> {props.pass ? props.initialValues.nome : 'Usuário'}</strong>
+                            <small> |
+                            {props.pass ? ' alterando senha' :
+                                    props.initialValues ? ' alterar' : ' novo'}
 
-const UsuarioForm = (props) =>
-    props.show &&
+                            </small>
+                        </CardHeader>
+                        <CardBody>
+                            {!props.pass &&
+                                <Row>
+                                    <Col xs="12">
+                                        <FormGroup>
+                                            <Label htmlFor="nome">Nome</Label>
+                                            <Field type="text" name="nome" placeholder="Nome"
+                                                component="input" className="form-control" required />
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            }
+                            {!props.pass &&
+                                <Row>
+                                    <Col xs="12">
+                                        <FormGroup>
+                                            <Label htmlFor="email">Email</Label>
+                                            <Field type="email" name="email" placeholder="email@provedor.com"
+                                                component="input" className="form-control" required />
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            }
+                            {(!props.initialValues || props.pass) &&
+                                <Row>
+                                    <Col xs="6">
+                                        <FormGroup>
+                                            <Label htmlFor="senha">Senha</Label>
+                                            <Field type="password" name="senha" placeholder="Digite a senha"
+                                                component="input" className="form-control" required />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col xs="6">
+                                        <FormGroup>
+                                            <Label htmlFor="resenha">Repita a senha</Label>
+                                            <Field type="password" name="resenha" placeholder="Repita a senha"
+                                                component="input" className="form-control" required />
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            }
+                            {!props.pass &&
+                                <Row>
+                                    <Col xs="7">
+                                        <FormGroup>
+                                            <Label htmlFor="perfil">Perfil</Label>
+                                            <Field component="select" className="form-control"
+                                                name="perfil">
+                                                <option />
+                                                <option value="ROLE_USER" >Usuário</option>
+                                                <option value="ROLE_ADMIN">Administrador</option>
 
-    <div className="animated fadeIn">
-        <Col xs="12" sm="10">
-            <Card>
-                <CardHeader>
-                    <strong>Credit Card</strong>
-                    <small> Form</small>
-                </CardHeader>
-                <CardBody>
-                    <Row>
-                        <Col xs="12">
-                            <FormGroup>
-                                <Label htmlFor="name">Name</Label>
-                                <Input type="text" id="name" placeholder="Enter your name" required />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="12">
-                            <FormGroup>
-                                <Label htmlFor="ccnumber">Credit Card Number</Label>
-                                <Input type="text" id="ccnumber" placeholder="0000 0000 0000 0000" required />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4">
-                            <FormGroup>
-                                <Label htmlFor="ccmonth">Month</Label>
-                                <Input type="select" name="ccmonth" id="ccmonth">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                        <Col xs="4">
-                            <FormGroup>
-                                <Label htmlFor="ccyear">Year</Label>
-                                <Input type="select" name="ccyear" id="ccyear">
-                                    <option>2017</option>
-                                    <option>2018</option>
-                                    <option>2019</option>
-                                    <option>2020</option>
-                                    <option>2021</option>
-                                    <option>2022</option>
-                                    <option>2023</option>
-                                    <option>2024</option>
-                                    <option>2025</option>
-                                    <option>2026</option>
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                        <Col xs="4">
-                            <FormGroup>
-                                <Label htmlFor="cvv">CVV/CVC</Label>
-                                <Input type="text" id="cvv" placeholder="123" required />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </CardBody>
-            </Card>
-        </Col>
+                                            </Field>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col xs="5">
+                                        <FormGroup>
+                                            <Label htmlFor="situacao">Situação</Label>
+                                            <Field component="select" className="form-control"
+                                                name="situacao" >
+                                                <option />
+                                                <option value="true" >Ativo</option>
+                                                <option value="false">Inativo</option>
 
-    </div>
+                                            </Field>
+                                        </FormGroup>
+                                    </Col>
+
+                                </Row>
+                            }
+                            {!props.pass &&
+                                <Row>
+                                    <Col xs="12">
+                                        <FormGroup>
+                                            <Label htmlFor="telefone">Telefone</Label>
+                                            <Field type="text" name="telefone" placeholder="(00) 00000-0000"
+                                                component="input" className="form-control" />
+                                        </FormGroup>
+                                    </Col>
+
+                                </Row>
+                            }
+                        </CardBody>
+                        <CardFooter>
+                            <Field component={Button} name="submit" type="submit" size="sm"
+                                color="primary" >
+                                <i className="fa fa-dot-circle-o"></i> Salvar
+                            </Field>
+                            <button onClick={() => props.onCancel()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Cancelar</button>
+
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </form>
+
+        </div>
+    )
+}
 
 
-const mapStateToProps = state => ({});
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(Actions, dispatch);
-
-export default connect(
-    mapStateToProps,
-    // mapDispatchToProps
-)(UsuarioForm);
+export default reduxForm({ form: 'usuario', enableReinitialize: true })(UsuarioForm)
