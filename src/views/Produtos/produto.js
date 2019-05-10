@@ -1,17 +1,26 @@
 import React from 'react';
-import { Card, CardBody, CardFooter, CardHeader, Col } from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 
 const Produtos = (props) =>
     <Col xs="4" sm="4" md="4" className="animated fadeIn">
         <Card>
-            <CardHeader className="text-truncate">{props.produto.produto}
-                <div className="card-header-actions">
-                    <AppSwitch className={'float-right mx-1'} color={'success'} outline label dataOn={'\u2713'} dataOff={'\u2715'}
-                        checked={props.produto.situacao}
-                        onClick={() => props.alterarProduto(props.produto, !props.produto.situacao)}
-                        size={'sm'} />
-                </div>
+            <CardHeader>
+                <Row>
+                    <Col xs="10" sm="10" md="10" className="text-truncate">
+                        {props.produto.produto}
+                    </Col>
+
+                    <Col xs="2" sm="2" md="2">
+                        <div className="card-header-actions" title="Visibilidade do produto">
+                            <AppSwitch className={'float-right mx-1'} color={'success'} outline label dataOn={'\u2713'} dataOff={'\u2715'}
+                                checked={props.produto.situacao}
+                                onClick={() => props.alterarProduto(props.produto, !props.produto.situacao)}
+                                size={'sm'} />
+                        </div>
+                    </Col>
+
+                </Row>
             </CardHeader>
             <CardBody>
                 <img src={
@@ -27,7 +36,25 @@ const Produtos = (props) =>
                     <br />Embalagem: {props.produto.embalagem}
                 </p>
             </CardBody>
-            <CardFooter>Card footer</CardFooter>
+            <CardFooter >
+                <Row>
+                    <Col xs="4" sm="4" md="4">
+                        <Button color="ghost-dark" size="sm" onClick={() => props.formProduto({})}>
+                            <i className="fa fa-pencil-square-o"></i>&nbsp;Novo
+                </Button>
+                    </Col>
+                    <Col xs="4" sm="4" md="4">
+                        <Button color="ghost-dark" size="sm" onClick={() => props.formProduto(props.produto)}>
+                            <i className="fa fa-pencil-square-o"></i>&nbsp;alterar
+                </Button>
+                    </Col>
+                    <Col xs="4" sm="4" md="4">
+                        <Button color="ghost-dark" size="sm" onClick={() => props.formProduto(props.produto)}>
+                            <i className="fa fa-picture-o"></i>&nbsp;Foto
+                </Button>
+                    </Col>
+                </Row>
+            </CardFooter>
         </Card>
     </Col>
 

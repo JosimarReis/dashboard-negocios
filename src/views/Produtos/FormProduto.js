@@ -8,7 +8,6 @@ import {
 
 const FormProduto = (props) => {
     const { handleSubmit, show } = props
-
     return (
         show &&
         <div className="animated fadeIn">
@@ -23,76 +22,132 @@ const FormProduto = (props) => {
                         </CardHeader>
                         <CardBody>
                             <Row>
-                                <Col xs="12">
+                                <Col xs="8">
                                     <FormGroup>
-                                        <Label htmlFor="nome">Nome</Label>
-                                        <Field type="text" name="nome" placeholder="Nome"
+                                        <Label htmlFor="codbar">Código de Barras</Label>
+                                        <Field type="text" name="codbar" placeholder="Código de Barras"
                                             component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="email">Email</Label>
-                                        <Field type="email" name="email" placeholder="email@provedor.com"
-                                            component="input" className="form-control" required />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="6">
-                                    <FormGroup>
-                                        <Label htmlFor="senha">Senha</Label>
-                                        <Field type="password" name="senha" placeholder="Digite a senha"
-                                            component="input" className="form-control" required />
-                                    </FormGroup>
-                                </Col>
-                                <Col xs="6">
-                                    <FormGroup>
-                                        <Label htmlFor="resenha">Repita a senha</Label>
-                                        <Field type="password" name="resenha" placeholder="Repita a senha"
-                                            component="input" className="form-control" required />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="7">
-                                    <FormGroup>
-                                        <Label htmlFor="perfil">Perfil</Label>
-                                        <Field component="select" className="form-control"
-                                            name="perfil">
-                                            <option />
-                                            <option value="ROLE_USER" >Usuário</option>
-                                            <option value="ROLE_ADMIN">Administrador</option>
-
-                                        </Field>
-                                    </FormGroup>
-                                </Col>
-                                <Col xs="5">
+                                <Col xs="4">
                                     <FormGroup>
                                         <Label htmlFor="situacao">Situação</Label>
                                         <Field component="select" className="form-control"
                                             name="situacao" >
-                                            <option />
                                             <option value="true" >Ativo</option>
                                             <option value="false">Inativo</option>
 
                                         </Field>
                                     </FormGroup>
                                 </Col>
-
                             </Row>
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="telefone">Telefone</Label>
-                                        <Field type="text" name="telefone" placeholder="(00) 00000-0000"
+                                        <Label htmlFor="produto">Nome do Produto</Label>
+                                        <Field type="text" name="produto" placeholder="Nome do produto"
+                                            component="input" className="form-control" required />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="marca">Marca do produto</Label>
+                                        <Field type="text" name="marca" placeholder="Marca do produto"
                                             component="input" className="form-control" />
                                     </FormGroup>
                                 </Col>
-
                             </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="categoria">Categoria</Label>
+                                        <Field component="select" className="form-control" name="categoria" required>
+                                            <option value="">Selecione uma categoria</option>
+                                            <option value="AÇOUGUE">AÇOUGUE</option>
+                                            <option value="BAZAR">BAZAR</option>
+                                            <option value="BEBÊ">BEBÊ</option>
+                                            <option value="BEBIDAS">BEBIDAS</option>
+                                            <option value="CONGELADO">CONGELADO</option>
+                                            <option value="CONGELADOS">CONGELADOS</option>
+                                            <option value="ELETRO">ELETRO</option>
+                                            <option value="FRIOS E LATICÍNIOS">FRIOS E LATICÍNIOS</option>
+                                            <option value="HIGIENE E BELEZA">HIGIENE E BELEZA</option>
+                                            <option value="HORTIFRUTI">HORTIFRUTI</option>
+                                            <option value="INFANTIL">INFANTIL</option>
+                                            <option value="LIMPEZA">LIMPEZA</option>
+                                            <option value="MERCEARIA">MERCEARIA</option>
+                                            <option value="PADARIA">PADARIA</option>
+                                            <option value="PETSHOP">PETSHOP</option>
+                                        </Field>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="embalagem">Embalagem</Label>
+                                        <Field type="text" name="embalagem" placeholder="Embalagem do produto: unidade, pacote, caixa"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="quantidade_embalagem">Quantidade em cada embalagem</Label>
+                                        <Field type="text" name="quantidade_embalagem" placeholder="Quantidade em cada embalagem"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="peso">Peso do Produto</Label>
+                                        <Field type="text" name="peso" placeholder="peso do produto"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="ncm">NCM</Label>
+                                        <Field type="text" name="ncm" placeholder="NCM do produto"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="cest_codigo">Código CEST</Label>
+                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="cest_descricao">Descrição CEST</Label>
+                                        <Field type="text" name="cest_descricao" placeholder="Descrição CEST do produto"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="cest_codigo">Código CEST</Label>
+                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
 
                         </CardBody>
                         <CardFooter>

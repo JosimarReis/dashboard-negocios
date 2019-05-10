@@ -5,7 +5,9 @@ import { produtoService } from '../../_services';
 export const produtosActions = {
     getProdutos,
     setFiltros,
-    produtoUpdate
+    produtoUpdate,
+    showForm,
+    popularForm
 }
 
 function getProdutos(filtros) {
@@ -82,4 +84,16 @@ function setFiltros(filtros) {
             )
     }
 
+}
+
+
+function showForm() {
+    return dispatch => {
+        dispatch({ type: produtosConstants.PRODUTO_FORM_SHOW })
+    }
+}
+function popularForm(produto) {
+    return dispatch => {
+        dispatch({ type: produtosConstants.PRODUTO_POPULAR_FORM, produto })
+    }
 }
