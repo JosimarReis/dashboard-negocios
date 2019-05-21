@@ -15,7 +15,7 @@ class DefaultFooter extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="http://localhost">Economeasy</a> &copy; 2019 Ma² labs.</span>
+        <span><a href="http://www.umpila.com.br/">UMPILA</a> &copy; 2019 Ma² labs.</span>
       </React.Fragment>
     );
   }

@@ -1,10 +1,10 @@
 import { authHeader } from '../_helpers';
 import axios from 'axios'
-
 export const produtoService = {
     getProdutos,
     getCategorias,
     getMarcas,
+    imagemUpload,
     produtoUpdate
 };
 
@@ -20,6 +20,20 @@ function produtoUpdate(produto) {
         return data.data
     })
 }
+
+function imagemUpload(id, photo) {
+
+    let formData = new FormData()
+    formData.append('photo', photo, photo.name);
+    const requestOptions = {
+
+        headers: authHeader(true)
+    };
+    return axios.post(`/produtos/upload/${id}`, formData, requestOptions).then(data => {
+        return data.data
+    })
+}
+
 function getProdutos(filtros) {
     const requestOptions = {
         method: 'POST',

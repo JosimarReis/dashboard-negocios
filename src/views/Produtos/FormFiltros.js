@@ -28,6 +28,7 @@ const FormFiltros = (props) => {
                             <Label htmlFor="categorias">Categorias</Label>
                             <Field component="select" className="form-control" name="categorias" multiple={true}>
                                 <option value="todos">Todos</option>
+                                <option value="">Sem categorias</option>
                                 <option value="AÇOUGUE">AÇOUGUE</option>
                                 <option value="BAZAR">BAZAR</option>
                                 <option value="BEBÊ">BEBÊ</option>
@@ -51,6 +52,7 @@ const FormFiltros = (props) => {
                             <Label htmlFor="marcas">Marcas</Label>
                             <Field component="select" className="form-control" name="marcas" multiple={true}>
                                 <option value="todos">Todos</option>
+                                <option value="">Sem marcas</option>
                             </Field>
                         </FormGroup>
                     </Col>
@@ -93,15 +95,9 @@ const FormFiltros = (props) => {
 
                             <Label>&nbsp;</Label>
                             <Pagination>
+
                                 <PaginationItem>
-                                    <Button onClick={() => props.mudarPagina(1)} >{'<<'}</Button>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <Button onClick={() =>
-                                        props.page >= 2 ?
-                                            props.mudarPagina(props.page - 1)
-                                            : ''
-                                    }>{'<'}</Button>
+                                    <Button disabled={props.page === 1} onClick={() => props.prevPage()}>{'<'}</Button>
                                 </PaginationItem>
                                 <PaginationItem>
                                     <Button >
@@ -109,16 +105,9 @@ const FormFiltros = (props) => {
                                     </Button>
                                 </PaginationItem>
                                 <PaginationItem>
-                                    <Button onClick={() =>
-                                        props.page < props.pages ?
-                                            props.mudarPagina(props.page + 1)
-                                            : ''
-                                    }>{'>'}</Button>
+                                    <Button disabled={props.page === props.pages} onClick={() => props.nextPage()}>{'>'}</Button>
                                 </PaginationItem>
-                                <PaginationItem>
-                                    <Button tag="button"
-                                        onClick={() => props.mudarPagina(props.pages)} >{'>>'}</Button>
-                                </PaginationItem>
+
                             </Pagination>
                         </FormGroup>
 

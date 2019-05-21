@@ -37,14 +37,35 @@ class DefaultLayout extends Component {
     this.props.history.push('/login')
   }
 
+  alterarUsuario = (pass, formUpload = false) => {
+
+    if (this.props.users.pass) this.props.onPass()
+    if (this.props.users.userFormShow) this.props.onShowForm()
+    if (this.props.users.userFormImage) this.props.onFormUpload()
+
+    if (pass) {
+      this.props.onPass()
+      this.props.onShowForm()
+    }
+
+    if (formUpload)
+      this.props.onFormUpload()
+
+    if (!pass && !formUpload) this.props.onShowForm()
+
+    this.props.onPopularUser(this.props.user)
+    this.props.history.push('/usuarios')
+
+  }
 
 
   render() {
+
     return (
       <div className="app">
         <AppHeader fixed>
-          <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+          <Suspense fallback={this.loading()}>
+            <DefaultHeader onLogout={e => this.signOut(e)} onAlterarUsuario={this.alterarUsuario} />
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -52,20 +73,21 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+              <AppSidebarNav navConfig={navigation} {...this.props} />
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            <AppBreadcrumb appRoutes={routes} />
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
                   {routes.map((route, idx) => {
                     return route.component ? (
-                      
-                      <Route
+                     /**  (route.name === 'Usuários' && usuario.perfil === "ROLE_USER") ?
+                        <Redirect from="/" to="/" />
+                        :*/ <Route
                         key={idx}
                         path={route.path}
                         exact={route.exact}
@@ -73,9 +95,10 @@ class DefaultLayout extends Component {
                         render={props => (
                           <route.component {...props} />
                         )} />
+
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+
                 </Switch>
               </Suspense>
             </Container>
@@ -107,6 +130,16 @@ function mapStateToProps(state) {
   };
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onShowForm: () => dispatch(userActions.showForm()),
+    onPass: () => dispatch(userActions.pass()),
+    onFormUpload: () => dispatch(userActions.formUpload()),
+    onPopularUser: user => dispatch(userActions.userGet(user)),
+    onImagemUpload: user => dispatch(userActions.imagemUpload(user))
+
+  }
+}
 //let connectedHomePage = connect(mapStateToProps)(Dashboard);
 //export { connectedHomePage as Dashboard };
-export default connect(mapStateToProps)(DefaultLayout);
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);

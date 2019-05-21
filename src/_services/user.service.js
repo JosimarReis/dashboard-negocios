@@ -7,9 +7,22 @@ export const userService = {
     getAll,
     usuarioCreate,
     usuarioRemove,
-    usuarioUpdate
+    usuarioUpdate,
+    imagemUpload
 };
 
+function imagemUpload(id, photo) {
+
+    let formData = new FormData()
+    formData.append('photo', photo, photo.name);
+    const requestOptions = {
+
+        headers: authHeader(true)
+    };
+    return axios.post(`/usuarios/upload/${id}`, formData, requestOptions).then(data => {
+        return data.data
+    })
+}
 function login(email, senha) {
     return axios.post('/auth/authenticate', {
         email: email, senha: senha

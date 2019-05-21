@@ -5,7 +5,8 @@ import { userActions } from "../../_store/_actions";
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import UsuarioForm from './UsuarioForm'
-import Aviso from '../Notifications/Aviso'
+import FotoPerfil from "./FotoPerfil";
+import { history } from '../../_helpers';
 
 //import { userService } from "../../_services/user.service";
 
@@ -26,10 +27,12 @@ function UsuarioRow(props) {
           <button className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
         </Link>
         <button onClick={() => props.alterarUsuario(usuario, false)} className="btn-square btn btn-ghost-warning btn-sm" title="Alterar dados"><i className="fa fa-pencil"></i></button>
+        <button onClick={() => props.alterarUsuario(usuario, false, true)} className="btn-square btn btn-ghost-warning btn-sm" title="Trocar Foto"><i className="fa fa fa-picture-o"></i></button>
         <button onClick={() => props.alterarUsuario(usuario, true)} className="btn-square btn btn-ghost-info btn-sm" title="Alterar Senha"><i className="fa fa-lock"></i></button>
         <button className="btn-square btn btn-ghost-danger btn-sm" title="Remover" usuario={usuario}
           onClick={() => props.removerUsuario(usuario)}
         ><i className="fa fa-minus"></i></button>
+
       </td>
     </tr>
   )
@@ -44,16 +47,43 @@ class Usuarios extends Component {
 
   }
 
-  alterarUsuario = (user, pass) => {
+  alterarUsuario = (user, pass, formUpload = false) => {
     if (this.props.users.pass) this.props.onPass()
 
     if (pass)
       this.props.onPass()
+    if (formUpload)
+      this.props.onFormUpload()
 
-    this.props.onUpdatedUser(user)
+    if (!this.props.users.userFormShow && !formUpload)
+      this.props.onShowForm()
+
+
+    this.props.onPopularUser(user)
+
+  }
+
+  alterarImagem = (usuario) => {
+    this.props.onPopularUser(usuario)
 
     if (!this.props.users.userFormShow)
       this.props.onShowForm()
+
+
+    if (this.props.users.produtoShowForm)
+      this.props.onShowForm()
+
+  }
+
+  enviarImagem = (values) => {
+    if (values) {
+      this.props.onImagemUpload(values);
+    }
+
+    if (this.props.users.userFormImage)
+      this.props.onFormUpload()
+
+    history.push('/usuarios')
   }
 
   submit = values => {
@@ -68,7 +98,6 @@ class Usuarios extends Component {
     if (this.props.users.pass)
       this.props.onPass()
 
-
   }
 
   removerUsuario = (user) => {
@@ -80,51 +109,63 @@ class Usuarios extends Component {
   render() {
 
     const { users } = this.props;
+    const { userFormShow, pass, userFormImage } = users
     const usuarios = users.items
-
+    console.log(users)
     return (
       <div className="animated fadeIn">
         <Row>
-          <Aviso />
-          <UsuarioForm initialValues={users.userUpdated} pass={users.pass}
-            onSubmit={this.submit} onCancel={this.props.onShowForm} show={users.userFormShow} xl={3} xs={3} />
-          <Col xs={12} xl={9}>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i> <strong className="card-title">Usuários </strong> 
+          <FotoPerfil
+            show={userFormImage}
+            initialValues={users.userUpdated}
+            onCancel={this.props.onFormUpload}
+            onSubmit={this.enviarImagem}
+          />
+          <UsuarioForm initialValues={users.userUpdated}
+            pass={pass}
+            onSubmit={this.submit}
+            onCancel={this.props.onShowForm} show={users.userFormShow} xl={3} xs={3} />
 
-                 {!users.userFormShow ?
-                  (
-                    <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> Novo</button>
-                  ) :
-                  (
-                    <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Fechar formuário</button>
-                  )}
-              </CardHeader>
-              <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">Nome</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Perfil</th>
-                      <th scope="col">Situação</th>
-                      <th scope="col" className="text-center">#</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+          {(!userFormShow && !userFormImage) &&
+            <Col xs={12} xl={12}>
+              <Card>
+                <CardHeader>
+                  <i className="fa fa-align-justify"></i> <strong className="card-title">Usuários </strong>
 
-                    {usuarios &&
-                      usuarios.map((usuario, index) =>
-                        <UsuarioRow key={index} usuario={usuario} alterarUsuario={this.alterarUsuario}
-                          removerUsuario={this.removerUsuario} />
-                      )
-                    }
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
+                  {!users.userFormShow ?
+                    (
+                      <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> Novo</button>
+                    ) :
+                    (
+                      <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Fechar formuário</button>
+                    )}
+                </CardHeader>
+                <CardBody>
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Perfil</th>
+                        <th scope="col">Situação</th>
+                        <th scope="col" className="text-center">#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {usuarios &&
+                        usuarios.map((usuario, index) =>
+                          <UsuarioRow key={index} usuario={usuario}
+                            alterarUsuario={this.alterarUsuario}
+                            removerUsuario={this.removerUsuario} />
+                        )
+                      }
+                    </tbody>
+                  </Table>
+                </CardBody>
+              </Card>
+            </Col>
+          }
         </Row>
 
       </div >
@@ -152,10 +193,12 @@ const mapDispatchToProps = dispatch => {
     onLoadUsers: () => dispatch(userActions.getAll()),
     onShowForm: () => dispatch(userActions.showForm()),
     onPass: () => dispatch(userActions.pass()),
+    onFormUpload: () => dispatch(userActions.formUpload()),
     onCreateUser: user => dispatch(userActions.userCreate(user)),
     onRemoveUser: user => dispatch(userActions.userRemove(user)),
     onUpdateUser: user => dispatch(userActions.userUpdate(user)),
-    onUpdatedUser: user => dispatch(userActions.userUpdated(user))
+    onPopularUser: user => dispatch(userActions.userGet(user)),
+    onImagemUpload: user => dispatch(userActions.imagemUpload(user))
 
   }
 }

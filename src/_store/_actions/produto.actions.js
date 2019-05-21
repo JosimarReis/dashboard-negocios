@@ -7,7 +7,9 @@ export const produtosActions = {
     setFiltros,
     produtoUpdate,
     showForm,
-    popularForm
+    popularForm,
+    showFormImage,
+    imagemUpload
 }
 
 function getProdutos(filtros) {
@@ -46,6 +48,20 @@ function produtoUpdate(produto) {
 
 
 }
+function imagemUpload(produto) {
+    return dispatch => {
+        produtoService.imagemUpload(produto._id, produto.arquivo)
+            .then(
+                produto => {
+                    dispatch({
+                        type: produtosConstants.PRODUTO_UPLOAD,
+                        produto
+                    })
+                },
+                error => console.log(error)
+            )
+    }
+}
 
 function setFiltros(filtros) {
 
@@ -54,18 +70,15 @@ function setFiltros(filtros) {
     filtros.pagina = parseInt(filtros.pagina)
     filtros.limit = parseInt(filtros.limit)
 
-    if (!filtros.categorias || filtros.categorias.filter((item) => item === 'todos').length == 1)
+    if (!filtros.categorias || filtros.categorias.filter((item) => item === 'todos').length === 1)
         delete (filtros.categorias)
     else
-        filtros.categorias = filtros.categorias.filter((item) => { if (item !== 'todos') return item })
+        filtros.categorias = filtros.categorias.filter((item) => (item !== 'todos'))
 
-    if (!filtros.marcas || filtros.marcas.filter((item) => item === 'todos').length == 1)
+    if (!filtros.marcas || filtros.marcas.filter((item) => item === 'todos').length === 1)
         delete (filtros.marcas)
     else
-        filtros.marcas = filtros.marcas.filter((item) => { if (item !== 'todos') return item })
-
-    console.log('filtros')
-    console.log(filtros)
+        filtros.marcas = filtros.marcas.filter((item) => (item !== 'todos'))
 
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_FILTROS, filtros })
@@ -90,6 +103,11 @@ function setFiltros(filtros) {
 function showForm() {
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_FORM_SHOW })
+    }
+}
+function showFormImage() {
+    return dispatch => {
+        dispatch({ type: produtosConstants.PRODUTO_IMAGE_FORM_SHOW })
     }
 }
 function popularForm(produto) {

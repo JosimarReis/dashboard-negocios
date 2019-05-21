@@ -3,10 +3,10 @@ import { Link, NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import logo from '../../assets/img/brand/logo.svg'
+import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import logo from '../../assets/logo.jpg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
-
+import config from '../../_config/config'
 const propTypes = {
   children: PropTypes.node,
 };
@@ -23,8 +23,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
+          full={{ src: logo, width: 89, height: 25, alt: 'UMPILA' }}
+          minimized={{ src: sygnet, width: 30, height: 30, alt: 'UMPILA' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
@@ -36,26 +36,25 @@ class DefaultHeader extends Component {
             <Link to="/usuarios" className="nav-link">Usuários</Link>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink to="#" className="nav-link">Empresa</NavLink>
+            <NavLink to="#" className="nav-link">Empresas</NavLink>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
-         
+
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'http://localhost:3000/uploads/usuarios/'+user.foto} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              <img src={!config.urlUsuarios ? config.usuarioPadrao : config.urlUsuarios + user.foto} className="img-avatar" alt={user.nome} />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
 
               <DropdownItem header tag="div" className="text-center"><strong>Conta</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-picture-o"></i> Foto de perfil</DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> Alterar Senha</DropdownItem>
-              <DropdownItem><i className="fa fa-edit"></i> Alterar dados</DropdownItem>
+              <DropdownItem onClick={() => this.props.onAlterarUsuario(false, true)}><i className="fa fa-picture-o"></i> Foto de perfil</DropdownItem>
+              <DropdownItem onClick={() => this.props.onAlterarUsuario(true)}><i className="fa fa-lock"></i> Alterar Senha</DropdownItem>
+              <DropdownItem onClick={() => this.props.onAlterarUsuario(false)}><i className="fa fa-edit"></i> Alterar dados</DropdownItem>
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

@@ -11,8 +11,10 @@ export const userActions = {
     userCreate,
     userUpdate,
     userRemove,
-    userUpdated,
-    pass
+    userGet,
+    pass,
+    imagemUpload,
+    formUpload
 };
 
 function login(email, senha) {
@@ -41,9 +43,14 @@ function pass() {
         dispatch({ type: userConstants.USER_PASS })
     }
 }
-function userUpdated(user) {
+function formUpload() {
     return dispatch => {
-        dispatch({ type: userConstants.USER_UPDATED, user })
+        dispatch({ type: userConstants.USER_FORM_UPLOAD })
+    }
+}
+function userGet(user) {
+    return dispatch => {
+        dispatch({ type: userConstants.USER_GET, user })
     }
 }
 function logout() {
@@ -124,5 +131,21 @@ function userRemove(user) {
                 error => console.log(error)
             )
 
+    }
+}
+
+function imagemUpload(usuario) {
+    return dispatch => {
+        userService.imagemUpload(usuario._id, usuario.arquivo)
+            .then(
+                usuario => {
+                    dispatch({
+                        type: userConstants.USER_FORM_UPLOAD,
+                        usuario
+                    })
+
+                },
+                error => console.log(error)
+            )
     }
 }

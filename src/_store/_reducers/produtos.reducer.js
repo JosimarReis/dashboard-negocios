@@ -1,6 +1,6 @@
 import { produtosConstants } from '../_constants';
 
-export function produtos(state = { produtoShowForm: false }, action) {
+export function produtos(state = { produtoShowForm: false, showFormImage: false }, action) {
   switch (action.type) {
 
     case produtosConstants.PRODUTO_GETALL_REQUEST:
@@ -12,6 +12,16 @@ export function produtos(state = { produtoShowForm: false }, action) {
       return {
         ...state,
         produtoShowForm: !state.produtoShowForm
+      }
+    case produtosConstants.PRODUTO_IMAGE_FORM_SHOW:
+      return {
+        ...state,
+        showFormImage: !state.showFormImage
+      }
+    case produtosConstants.PRODUTO_UPLOAD:
+      return {
+       ...state,
+       produto: action.produto
       }
     case produtosConstants.PRODUTO_POPULAR_FORM:
       return {

@@ -35,7 +35,9 @@
     "redux-lazy": "^0.6.1",
     "redux-logger": "3.0.6",
     "redux-thunk": "^2.3.0",
-    "simple-line-icons": "^2.4.1"
+    "simple-line-icons": "^2.4.1",
+    "socket.io-client": "^2.2.0",
+    "socketio-file-upload": "^0.7.0"
   },
   "scripts": {
     "start": "set PORT=3900 && react-scripts start",

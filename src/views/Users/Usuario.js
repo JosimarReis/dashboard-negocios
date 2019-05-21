@@ -10,7 +10,7 @@ class Usuario extends Component {
   render() {
     const { users, match: { params }  } = this.props;
     const usuarios = users.items
-    console.log(`uri -> ${params.id}`)
+    
     const user = usuarios.find( user => user._id.toString() === params.id)
 
     const userDetails = user ? Object.entries(user) : [['id', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
