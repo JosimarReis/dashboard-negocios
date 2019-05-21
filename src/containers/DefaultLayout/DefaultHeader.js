@@ -43,7 +43,7 @@ class DefaultHeader extends Component {
 
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={!config.urlUsuarios ? config.usuarioPadrao : config.urlUsuarios + user.foto} className="img-avatar" alt={user.nome} />
+              <img src={!user.foto ? config.usuarioPadrao : config.urlUsuarios + user.foto} className="img-avatar" alt={user.nome} />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
 

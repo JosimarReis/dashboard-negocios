@@ -1,29 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //import { userActions } from "../../_store/_actions";
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
-  CardTitle,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Progress,
   Row,
-  Table,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities'
 
 import { produtosActions } from "../../_store/_actions";
 
@@ -42,71 +28,10 @@ class Dashboard extends React.Component {
 
 
   render() {
-    const { user } = this.props;
-    const brandPrimary = getStyle('--primary')
-    const brandSuccess = getStyle('--success')
     const brandInfo = getStyle('--info')
-    const brandWarning = getStyle('--warning')
-    const brandDanger = getStyle('--danger')
-    // Card Chart 1
-    const cardChartData1 = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label: 'My First dataset',
-          backgroundColor: brandPrimary,
-          borderColor: 'rgba(255,255,255,.55)',
-          data: [65, 59, 84, 84, 51, 55, 40],
-        },
-      ],
-    };
-
-    const cardChartOpts1 = {
-      tooltips: {
-        enabled: false,
-        custom: CustomTooltips
-      },
-      maintainAspectRatio: false,
-      legend: {
-        display: false,
-      },
-      scales: {
-        xAxes: [
-          {
-            gridLines: {
-              color: 'transparent',
-              zeroLineColor: 'transparent',
-            },
-            ticks: {
-              fontSize: 2,
-              fontColor: 'transparent',
-            },
-
-          }],
-        yAxes: [
-          {
-            display: false,
-            ticks: {
-              display: false,
-              min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-              max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
-            },
-          }],
-      },
-      elements: {
-        line: {
-          borderWidth: 1,
-        },
-        point: {
-          radius: 4,
-          hitRadius: 10,
-          hoverRadius: 4,
-        },
-      }
-    }
 
 
-    // Card Chart 2
+        // Card Chart 2
     const cardChartData2 = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [

@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -33,7 +33,7 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
-    this.props.dispatch(userActions.logout());
+    this.props.onLogout();
     this.props.history.push('/login')
   }
 
@@ -136,7 +136,8 @@ const mapDispatchToProps = dispatch => {
     onPass: () => dispatch(userActions.pass()),
     onFormUpload: () => dispatch(userActions.formUpload()),
     onPopularUser: user => dispatch(userActions.userGet(user)),
-    onImagemUpload: user => dispatch(userActions.imagemUpload(user))
+    onImagemUpload: user => dispatch(userActions.imagemUpload(user)),
+    onLogout: () => dispatch(userActions.logout())
 
   }
 }

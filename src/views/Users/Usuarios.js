@@ -7,7 +7,7 @@ import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import UsuarioForm from './UsuarioForm'
 import FotoPerfil from "./FotoPerfil";
 import { history } from '../../_helpers';
-
+import config from "../../_config/config";
 //import { userService } from "../../_services/user.service";
 
 function UsuarioRow(props) {
@@ -17,7 +17,12 @@ function UsuarioRow(props) {
   }
   return (
     <tr key={usuario._id.toString()}>
+      <td className="text-center">
+        <div className="avatar">
+          <img src={!usuario.foto? config.usuarioPadrao : config.urlUsuarios + usuario.foto} className="img-avatar" alt={usuario.email} />
 
+        </div>
+      </td>
       <td>{usuario.nome}</td>
       <td>{usuario.email}</td>
       <td>{usuario.perfil === "ROLE_ADMIN" ? "Administrador" : "Usuário"}</td>
@@ -27,7 +32,7 @@ function UsuarioRow(props) {
           <button className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
         </Link>
         <button onClick={() => props.alterarUsuario(usuario, false)} className="btn-square btn btn-ghost-warning btn-sm" title="Alterar dados"><i className="fa fa-pencil"></i></button>
-        <button onClick={() => props.alterarUsuario(usuario, false, true)} className="btn-square btn btn-ghost-warning btn-sm" title="Trocar Foto"><i className="fa fa fa-picture-o"></i></button>
+        <button onClick={() => props.alterarUsuario(usuario, false, true)} className="btn-square btn btn-ghost-dark btn-sm" title="Trocar Foto"><i className="fa fa fa-picture-o"></i></button>
         <button onClick={() => props.alterarUsuario(usuario, true)} className="btn-square btn btn-ghost-info btn-sm" title="Alterar Senha"><i className="fa fa-lock"></i></button>
         <button className="btn-square btn btn-ghost-danger btn-sm" title="Remover" usuario={usuario}
           onClick={() => props.removerUsuario(usuario)}
@@ -111,7 +116,7 @@ class Usuarios extends Component {
     const { users } = this.props;
     const { userFormShow, pass, userFormImage } = users
     const usuarios = users.items
-    console.log(users)
+    
     return (
       <div className="animated fadeIn">
         <Row>
@@ -144,6 +149,7 @@ class Usuarios extends Component {
                   <Table responsive hover>
                     <thead>
                       <tr>
+                        <th className="text-center"><i className="icon-people"></i></th>
                         <th scope="col">Nome</th>
                         <th scope="col">Email</th>
                         <th scope="col">Perfil</th>
