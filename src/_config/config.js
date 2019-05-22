@@ -15,6 +15,8 @@ export default {
     apiUrl: dominio("/api"),
     urlImagens: dominio("/uploads/"),
     urlUsuarios: dominio("/uploads/usuarios/"),
+    urlRamos: dominio("/uploads/ramoAtividade/"),
     imagemPadrao: dominio('/uploads/nao_encontrada.jpg'),
     usuarioPadrao: dominio("/uploads/usuarios/padrao.png")
+
 }

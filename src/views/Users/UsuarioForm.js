@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     Card,
     CardBody,
     CardHeader,
@@ -13,7 +14,8 @@ import {
 import { Field, reduxForm } from 'redux-form'
 
 let UsuarioForm = props => {
-    const { handleSubmit, show } = props
+    const { handleSubmit, show, error } = props
+    
     return (
         show &&
         <div className="animated fadeIn">
@@ -65,6 +67,7 @@ let UsuarioForm = props => {
                                             <Label htmlFor="resenha">Repita a senha</Label>
                                             <Field type="password" name="resenha" placeholder="Repita a senha"
                                                 component="input" className="form-control" required />
+
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -110,6 +113,11 @@ let UsuarioForm = props => {
 
                                 </Row>
                             }
+                            {error && <Row>
+                                <Col xs="12">
+                                    <Alert color="danger">{error}</Alert>
+                                </Col>
+                            </Row>}
                         </CardBody>
                         <CardFooter>
                             <Field component={Button} name="submit" type="submit" size="sm"

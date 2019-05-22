@@ -9,6 +9,7 @@ import FotoPerfil from "./FotoPerfil";
 import { history } from '../../_helpers';
 import config from "../../_config/config";
 //import { userService } from "../../_services/user.service";
+import { SubmissionError } from 'redux-form'
 
 function UsuarioRow(props) {
   const usuario = props.usuario
@@ -19,7 +20,7 @@ function UsuarioRow(props) {
     <tr key={usuario._id.toString()}>
       <td className="text-center">
         <div className="avatar">
-          <img src={!usuario.foto? config.usuarioPadrao : config.urlUsuarios + usuario.foto} className="img-avatar" alt={usuario.email} />
+          <img src={!usuario.foto ? config.usuarioPadrao : config.urlUsuarios + usuario.foto} className="img-avatar" alt={usuario.email} />
 
         </div>
       </td>
@@ -92,18 +93,48 @@ class Usuarios extends Component {
   }
 
   submit = values => {
-    if (!this.props.users.userUpdated)
-      this.props.onCreateUser(values)
-    else
+    new SubmissionError({})
+
+    if (!this.props.users.userUpdated) {
+
+      if (values.senha !== values.resenha) {
+        throw new SubmissionError({ senha: 'Erro ao confirmar as senhas', _error: 'As senhas são diferentes' })
+      } else {
+        this.props.onCreateUser(values)
+      }
+
+    }
+    else if (this.props.users.pass) {
+      if (values.senha !== values.resenha) {
+        throw new SubmissionError({ senha: 'Erro ao confirmar as senhas', _error: 'As senhas são diferentes' })
+      } else {
+        this.props.onUpdateUser(values)
+      }
+    }
+    else {
+
       this.props.onUpdateUser(values)
+    }
 
     if (this.props.users.userFormShow)
       this.props.onShowForm()
 
-    if (this.props.users.pass)
+    if (this.props.users.pass) {
       this.props.onPass()
+    }
 
   }
+
+  novoUsuario = () => {
+    if (!this.props.users.userFormShow)
+      this.props.onShowForm()
+
+    if (!this.props.users.pass) {
+      this.props.onPass()
+    }
+
+  }
+
 
   removerUsuario = (user) => {
     if (window.confirm(`Deseja remover o usuário '${user.nome}'`)) {
@@ -116,7 +147,7 @@ class Usuarios extends Component {
     const { users } = this.props;
     const { userFormShow, pass, userFormImage } = users
     const usuarios = users.items
-    
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -139,7 +170,7 @@ class Usuarios extends Component {
 
                   {!users.userFormShow ?
                     (
-                      <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> Novo</button>
+                      <button onClick={() => this.alterarUsuario({})} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> Novo</button>
                     ) :
                     (
                       <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Fechar formuário</button>

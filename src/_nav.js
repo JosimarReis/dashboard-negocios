@@ -34,6 +34,11 @@ export default {
       url: '/usuarios',
       icon: 'icon-user',
     },
+    {
+      name: 'Ramos de atividade',
+      url: '/ramos',
+      icon: 'fa fa-sitemap fa-lg ',
+    },
     
     
    
