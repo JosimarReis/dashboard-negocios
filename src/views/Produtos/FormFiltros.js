@@ -50,7 +50,8 @@ const FormFiltros = (props) => {
                     <Col xs="3">
                         <FormGroup>
                             <Label htmlFor="marcas">Marcas</Label>
-                            <Field component="select" className="form-control" name="marcas" multiple={true}>
+                            <Field component="select" className="form-control"
+                             name="marcas" multiple={true}>
                                 <option value="todos">Todos</option>
                                 <option value="">Sem marcas</option>
                             </Field>

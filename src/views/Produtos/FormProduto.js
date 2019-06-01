@@ -1,32 +1,80 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-
 import {
-    Col, Row, FormGroup, Label, Button,
+    Alert, Col, Row, FormGroup, Label, Button,
     Card, CardHeader, CardBody, CardFooter
 } from 'reactstrap';
+import asyncValidate from "./asyncValidate";
 
+
+const validate = values => {
+    const errors = {}
+    if (!values.codbar) {
+        errors.codbar = 'Obrigatório'
+    }
+    if (!values.produto) {
+        errors.produto = 'Obrigatório'
+    }
+    if (!values.categoria) {
+        errors.categoria = 'Obrigatório'
+    }
+    return errors
+}
+const renderField = ({
+    input,
+    label,
+    type,
+    classN,
+
+    meta: { asyncValidating, touched, error, }
+}) => {
+
+    return (
+        <div >
+            <input {...input} type={type} placeholder={label}
+                className={classN + (asyncValidating ? 'async-validating' : '')} />
+            {touched && error && <Alert color="danger">{error}</Alert>}
+        </div>
+    )
+}
+/**
+ * 
+ * @param {                                    <FormGroup className={asyncValidating ? 'async-validating' : ''}>
+                                      <Label htmlFor="codbar">Código de Barras</Label>
+                                      <Field type="text" name="codbar"
+                                          placeholder="Código de Barras"
+                                          component="input" className="form-control" required />
+                                      {touched && error && <span>{error}</span>}
+} props 
+ */
 const FormProduto = (props) => {
-    const { handleSubmit, show } = props
+    const { handleSubmit, show, error, pristine, submitting, existe } = props
+    ///console.log(props)
     return (
         show &&
         <div className="animated fadeIn">
             <form onSubmit={handleSubmit} className="form" >
-                <Col xs={12} sm={12}>
+                <Col xs="12" sm="11" md="9" lg="8" xl="5" >
                     <Card>
                         <CardHeader>
-                            <strong> {props.pass ? props.initialValues.nome : 'Produto'}</strong>
+                            <strong>Produto</strong>
                             <small> |
-                                {props.initialValues ? ' alterar' : ' novo'}
+                                {props.initialValues._id ? ' alterar' : ' novo'}
                             </small>
                         </CardHeader>
                         <CardBody>
+                            {error && <Row>
+                                <Col xs="12">
+                                    <Alert color="danger">{error}</Alert>
+                                </Col>
+                            </Row>}
                             <Row>
                                 <Col xs="8">
+
                                     <FormGroup>
                                         <Label htmlFor="codbar">Código de Barras</Label>
-                                        <Field type="text" name="codbar" placeholder="Código de Barras"
-                                            component="input" className="form-control" required />
+                                        <Field type="text" name="codbar" label="Código de Barras" existe={existe}
+                                            component={renderField} classN="form-control" required />
                                     </FormGroup>
                                 </Col>
                                 <Col xs="4">
@@ -138,24 +186,16 @@ const FormProduto = (props) => {
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_codigo">Código CEST</Label>
-                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
 
                         </CardBody>
                         <CardFooter>
                             <Field component={Button} name="submit" type="submit" size="sm"
+                                disabled={submitting || pristine}
                                 color="primary" >
                                 <i className="fa fa-dot-circle-o"></i> Salvar
                             </Field>
-                            <button onClick={() => props.onCancel()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Cancelar</button>
+                            <button onClick={() => props.onCancel()}
+                                className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Cancelar</button>
 
                         </CardFooter>
                     </Card>
@@ -167,4 +207,10 @@ const FormProduto = (props) => {
 }
 
 //, enableReinitialize: true
-export default reduxForm({ form: 'formProduto', enableReinitialize: true })(FormProduto)
+export default reduxForm({
+    form: 'formProduto',
+    validate,
+    asyncValidate,
+    asyncBlurFields: 'codbar',
+    enableReinitialize: true
+})(FormProduto)

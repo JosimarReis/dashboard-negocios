@@ -5,6 +5,7 @@ import { users } from './users.reducer';
 import { ramos } from './ramos.reducer';
 import { produtos } from './produtos.reducer';
 import { alert } from './alert.reducer';
+import { estabelecimentos } from './estabelecimentos.reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   users,
   produtos,
   alert,
-  ramos
+  ramos,
+  estabelecimentos
 });
 
 export default rootReducer;

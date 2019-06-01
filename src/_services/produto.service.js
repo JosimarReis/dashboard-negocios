@@ -5,10 +5,21 @@ export const produtoService = {
     getCategorias,
     getMarcas,
     imagemUpload,
-    produtoUpdate
+    produtoUpdate,
+    produtoCreate,
+    produtoCodBar
 };
 
 
+function produtoCodBar(codBar) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return axios.get(`/produtos/codbar/${codBar}`,requestOptions).then(data => {
+        return data.data
+    })
+}
 function produtoUpdate(produto) {
     const requestOptions = {
         method: 'POST',
@@ -20,7 +31,17 @@ function produtoUpdate(produto) {
         return data.data
     })
 }
-
+function produtoCreate(produto) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader()
+    };
+    return axios.post('/produtos', {
+        produto: produto
+    }, requestOptions).then(data => {
+        return data.data
+    })
+}
 function imagemUpload(id, photo) {
 
     let formData = new FormData()

@@ -150,17 +150,17 @@ class Usuarios extends Component {
 
     return (
       <div className="animated fadeIn">
+        <FotoPerfil
+          show={userFormImage}
+          initialValues={users.userUpdated}
+          onCancel={this.props.onFormUpload}
+          onSubmit={this.enviarImagem}
+        />
+        <UsuarioForm initialValues={users.userUpdated}
+          pass={pass}
+          onSubmit={this.submit}
+          onCancel={this.props.onShowForm} show={users.userFormShow} xl={3} xs={3} />
         <Row>
-          <FotoPerfil
-            show={userFormImage}
-            initialValues={users.userUpdated}
-            onCancel={this.props.onFormUpload}
-            onSubmit={this.enviarImagem}
-          />
-          <UsuarioForm initialValues={users.userUpdated}
-            pass={pass}
-            onSubmit={this.submit}
-            onCancel={this.props.onShowForm} show={users.userFormShow} xl={3} xs={3} />
 
           {(!userFormShow && !userFormImage) &&
             <Col xs={12} xl={12}>

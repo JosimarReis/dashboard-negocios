@@ -20,7 +20,7 @@ let RamoForm = props => {
         show &&
         <div className="animated fadeIn">
             <form onSubmit={handleSubmit} className="form" >
-                <Col   xs="12" sm="12" md="12" lg="12" xl="12" >
+                <Col xs="12" sm="11" md="9" lg="8" xl="5" >
                     <Card>
                         <CardHeader>
                             <strong> {props.pass ? props.initialValues.nome : 'Ramo'}</strong>

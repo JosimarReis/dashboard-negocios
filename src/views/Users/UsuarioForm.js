@@ -15,12 +15,13 @@ import { Field, reduxForm } from 'redux-form'
 
 let UsuarioForm = props => {
     const { handleSubmit, show, error } = props
-    
+
     return (
         show &&
         <div className="animated fadeIn">
             <form onSubmit={handleSubmit} className="form" >
-                <Col xs={12} sm={12}>
+                <Col xs="12" sm="11" md="9" lg="8" xl="5" >
+
                     <Card>
                         <CardHeader>
                             <strong> {props.pass ? props.initialValues.nome : 'Usuário'}</strong>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { produtosActions } from "../../_store/_actions";
-import { history } from '../../_helpers';
 
 import Produto from './produto'
 import {
@@ -10,10 +9,23 @@ import {
 import FormFiltros from './FormFiltros';
 import FormProduto from './FormProduto'
 import FormImage from './FormImage';
+import { SubmissionError } from 'redux-form';
 
 class Produtos extends Component {
   componentDidMount() {
-    this.props.onSetFiltros({ pagina: 1, limit: 30 })
+    let filtroInicial = {
+      listar: 'todos',
+      situacao: 'todos',
+      categorias: ['todos'],
+      marcas: ['todos'],
+      limit: 30,
+      order: 'asc',
+      pagina: 1
+    }
+    let filtros = JSON.parse(localStorage.getItem('filtros'));
+
+    filtroInicial = filtros ? filtros : filtroInicial
+    this.props.onSetFiltros(filtroInicial)
   }
   submit = values => {
     this.props.onSetFiltros(values)
@@ -47,20 +59,50 @@ class Produtos extends Component {
   enviarImagem = (values) => {
     if (values) {
       this.props.onUploadImage(values);
+
+      if (this.props.produtos.showFormImage)
+        this.props.onShowFormImage()
+
+      if (this.props.produtos.produtoShowForm)
+        this.props.onShowForm()
+
+      this.props.onSetFiltros(this.props.produtos.filtros)
     }
 
-    if (this.props.produtos.showFormImage)
-      this.props.onShowFormImage()
-    history.push('/produtos')
+
   }
-  alterarProduto = (values) => {
-    if (this.props.produtos.produto)
-      this.props.onAlterarProduto(values);
 
-    if (this.props.produtos.produtoShowForm)
-      this.props.onShowForm()
+  salvarProduto = (values) => {
+    console.log(values)
+    //new SubmissionError({})
 
-    history.push('/produtos')
+    this.produtoCodBar(values.codbar)
+
+    if (this.props.produtos.produto) {
+      if (this.props.produtos.produto._id) {
+        this.props.onAlterarProduto(values);
+
+        if (this.props.produtos.produtoShowForm)
+          this.props.onShowForm()
+
+        this.props.onSetFiltros(this.props.produtos.filtros)
+
+
+      } else {
+        this.props.onCadastrarProduto(values)
+
+        if (this.props.produtos.produtoShowForm)
+          this.props.onShowForm()
+
+        this.props.onSetFiltros(this.props.produtos.filtros)
+      }
+    }
+
+
+
+  }
+  produtoCodBar = (codBar) => {
+    this.props.onGetCodBar(codBar)
   }
 
   prevPage = () => {
@@ -86,15 +128,8 @@ class Produtos extends Component {
   render() {
     const { produtos } = this.props
     const { loading, produtoShowForm, showFormImage } = produtos
-    const initialForm = {
-      listar: 'todos',
-      categorias: ['todos'],
-      marcas: ['todos'],
-      limit: 30,
-      order: 'asc',
-      pagina: 1
-    }
 
+    console.log(produtos)
     return (
 
       <div className="animated fadeIn" >
@@ -110,9 +145,12 @@ class Produtos extends Component {
 
           <FormProduto
             show={produtoShowForm}
+            existe={produtos.existe}
             initialValues={produtos.produto}
             onCancel={this.props.onShowForm}
-            onSubmit={this.alterarProduto}
+            onSubmit={this.salvarProduto}
+            onGetCodBar={this.produtoCodBar}
+
           />
         }
         {(!produtoShowForm && !showFormImage) &&
@@ -124,7 +162,7 @@ class Produtos extends Component {
 
                 </CardHeader>
                 <CardBody>
-                  <FormFiltros onSubmit={this.submit} initialValues={initialForm}
+                  <FormFiltros onSubmit={this.submit} initialValues={produtos.filtros}
                     page={produtos.page}
                     pages={produtos.pages}
                     prevPage={this.prevPage}
@@ -137,9 +175,10 @@ class Produtos extends Component {
           </Row>
         }
         {(!produtoShowForm && !showFormImage) &&
-
           <Row>
-            {loading && <Alert color="success"  xs="12" sm="12" md="12" lg="12" xl="12" >carregando...</Alert>}
+
+            {loading &&
+              <Alert color="success" xs="12" sm="12" md="12" lg="12" xl="12" >carregando...</Alert>}
 
             {(produtos.docs && !loading) &&
               produtos.docs.map((produto, index) => <Produto produto={produto}
@@ -173,10 +212,12 @@ const mapDispatchToProps = dispatch => {
     onLoadProdutos: (filtros) => dispatch(produtosActions.getProdutos(filtros)),
     onSetFiltros: (filtros) => dispatch(produtosActions.setFiltros(filtros)),
     onAlterarProduto: (produto) => dispatch(produtosActions.produtoUpdate(produto)),
+    onCadastrarProduto: (produto) => dispatch(produtosActions.produtoCreate(produto)),
     onShowForm: () => dispatch(produtosActions.showForm()),
     onShowFormImage: () => dispatch(produtosActions.showFormImage()),
     onPopularForm: (produto) => dispatch(produtosActions.popularForm(produto)),
-    onUploadImage: (produto) => dispatch(produtosActions.imagemUpload(produto))
+    onUploadImage: (produto) => dispatch(produtosActions.imagemUpload(produto)),
+    onGetCodBar: (codBar) => dispatch(produtosActions.produtoCodBar(codBar))
   }
 }
 

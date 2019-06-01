@@ -1,184 +1,194 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { produtosActions } from "../../_store/_actions";
-import { history } from '../../_helpers';
+import { estabelecimentoActions, ramoActions } from "../../../_store/_actions";
 
-import Produto from './Estabelecimento'
-import {
-  Alert, Card, CardBody, CardHeader, Col, Row
-} from 'reactstrap';
-import FormFiltros from './FormFiltros';
-import FormProduto from './FormEstabelecimento'
-import FormImage from './FormImage';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import FormEstabelecimento from './FormEstabelecimento'
+import { history } from '../../../_helpers';
+function EstabelecimentoRow(props) {
+  const estabelecimento = props.estabelecimento
+  const getBadge = (situacao) => {
+    return situacao === true ? 'success' : 'secondary'
+  }
+  return (
+    <tr key={estabelecimento._id.toString()}>
+      <td className="text-truncate">
+        {estabelecimento.dados.razaoSocial}
+      </td>
+      <td>
+        {estabelecimento.email}
+      </td>
+      <td>
+
+        <small>{estabelecimento.telefones}</small>
+      </td>
+      <td className="text-center"><Badge color={getBadge(estabelecimento.situacao)}>{(estabelecimento.situacao === true) ? 'Ativo' : 'Inativo'}</Badge></td>
+      <td className="text-right">
+        <button onClick={() => props.novoEstabelecimento()} className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
+        <button onClick={() => props.alterarEstabelecimento(estabelecimento, false)} className="btn-square btn btn-ghost-warning btn-sm" title="Alterar dados"><i className="fa fa-pencil"></i></button>
+        <button className="btn-square btn btn-ghost-danger btn-sm" title="Remover" estabelecimento={estabelecimento}
+          onClick={() => props.removerEstabelecimento(estabelecimento)}
+        ><i className="fa fa-minus"></i></button>
+
+      </td>
+    </tr>
+  )
+}
+
+
 
 class Estabelecimentos extends Component {
   componentDidMount() {
-    this.props.onSetFiltros({ pagina: 1, limit: 30 })
-  }
-  submit = values => {
-    this.props.onSetFiltros(values)
+    this.props.onLoadEstabelecimentos();
+    this.props.onGetRamos();
+
   }
 
-  mudarPagina = (pagina) => {
-    this.props.onLoadProdutos({ pagina })
-  }
+  alterarEstabelecimento = (estabelecimento, formUpload = false) => {
+    if (formUpload)
+      this.props.onFormUpload()
 
-  alterarSituacaoProduto = (produto, situacao) => {
-    produto.situacao = situacao
-    this.props.onAlterarProduto(produto);
-  }
-  formProduto = (produto) => {
-    this.props.onPopularForm(produto)
-    if (!this.props.produtos.produtoShowForm)
+    if (!this.props.estabelecimentos.estabelecimentoFormShow && !formUpload)
       this.props.onShowForm()
+
+
+    this.props.onPopularEstabelecimento(estabelecimento)
+
   }
 
-  alterarImagem = (produto) => {
-    this.props.onPopularForm(produto)
+  alterarImagem = (estabelecimento) => {
+    this.props.onPopularEstabelecimento(estabelecimento)
 
-    if (!this.props.produtos.showFormImage)
-      this.props.onShowFormImage()
+    if (!this.props.estabelecimentos.estabelecimentoFormShow)
+      this.props.onShowForm()
 
 
-    if (this.props.produtos.produtoShowForm)
+    if (this.props.estabelecimentos.produtoShowForm)
       this.props.onShowForm()
 
   }
+
   enviarImagem = (values) => {
     if (values) {
-      this.props.onUploadImage(values);
+      this.props.onImagemUpload(values);
     }
 
-    if (this.props.produtos.showFormImage)
-      this.props.onShowFormImage()
-    history.push('/produtos')
-  }
-  alterarProduto = (values) => {
-    if (this.props.produtos.produto)
-      this.props.onAlterarProduto(values);
+    if (this.props.estabelecimentos.estabelecimentoFormImage)
+      this.props.onFormUpload()
 
-    if (this.props.produtos.produtoShowForm)
+    history.push('/estabelecimentos')
+  }
+
+  submit = values => {
+    console.log(values)
+    /**
+    if (this.props.estabelecimentos.estabelecimentoUpdated)
+      this.props.onUpdateEstabelecimento(values)
+    else
+      this.props.onCreateEstabelecimento(values)
+
+
+    if (this.props.estabelecimentos.estabelecimentoFormShow)
       this.props.onShowForm()
-
-    history.push('/produtos')
+ */
   }
 
-  prevPage = () => {
-    const { page, filtros } = this.props.produtos
-    if (page === 1) return
-
-    let pagina = page - 1
-    const f = { ...filtros, pagina }
-    this.props.onSetFiltros(f)
-
-  }
-
-  nextPage = () => {
-    const { page, pages, filtros } = this.props.produtos
-    if (page === pages) return
-
-    let pagina = page + 1
-    const f = { ...filtros, pagina }
-    this.props.onSetFiltros(f)
-
+  removerEstabelecimento = (estabelecimento) => {
+    if (window.confirm(`Deseja remover o estabelecimento '${estabelecimento.dados.razaoSocial}'`)) {
+      this.props.onRemoveEstabelecimento(estabelecimento)
+    }
   }
 
   render() {
-    const { produtos } = this.props
-    const { loading, produtoShowForm, showFormImage } = produtos
-    const initialForm = {
-      listar: 'todos',
-      categorias: ['todos'],
-      marcas: ['todos'],
-      limit: 30,
-      order: 'asc',
-      pagina: 1
-    }
 
+    const { estabelecimentos } = this.props;
+    const { estabelecimentoFormShow, estabelecimentoFormImage } = estabelecimentos
+    console.log(this.props.ramos)
     return (
+      <div className="animated fadeIn">
+        <FormEstabelecimento initialValues={estabelecimentos.estabelecimentoUpdated}
+          ramos={this.props.ramos.items}
+          onSubmit={this.submit}
+          onCancel={this.props.onShowForm}
+          show={estabelecimentos.estabelecimentoFormShow} />
+        <Row xs="12" sm="12" md="12" lg="12" xl="12" >
 
-      <div className="animated fadeIn" >
-        {(produtos.produto && showFormImage) &&
-          <FormImage
-            initialValues={produtos.produto}
-            show={showFormImage}
-            onCancel={this.props.onShowFormImage}
-            onSubmit={this.enviarImagem}
-          />
-        }
-        {(produtos.produto && produtoShowForm) &&
 
-          <FormProduto
-            show={produtoShowForm}
-            initialValues={produtos.produto}
-            onCancel={this.props.onShowForm}
-            onSubmit={this.alterarProduto}
-          />
-        }
-        {(!produtoShowForm && !showFormImage) &&
-          <Row>
-            <Col xl={12}>
-              <Card>
+          {(!estabelecimentoFormShow && !estabelecimentoFormImage) &&
+            <Col xs={12} xl={12}>
+              <Card >
                 <CardHeader>
-                  <i className="fa fa-align-justify"></i> <strong className="card-title">Produtos</strong>
+                  <i className="fa fa-align-justify"></i> <strong className="card-title">Estabelecimentos de Atividade </strong>
 
+                  {!estabelecimentos.estabelecimentoFormShow ?
+                    (
+                      <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-ghost-primary btn-sm"><i className="fa fa-plus"></i> Novo</button>
+                    ) :
+                    (
+                      <button onClick={() => this.props.onShowForm()} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Fechar formuário</button>
+                    )}
                 </CardHeader>
                 <CardBody>
-                  <FormFiltros onSubmit={this.submit} initialValues={initialForm}
-                    page={produtos.page}
-                    pages={produtos.pages}
-                    prevPage={this.prevPage}
-                    nextPage={this.nextPage}
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Situação</th>
+                        <th scope="col" className="text-center">#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                  />
+                      {estabelecimentos.items &&
+                        estabelecimentos.items.map((estabelecimento, index) =>
+                          <EstabelecimentoRow key={index} estabelecimento={estabelecimento}
+                            alterarEstabelecimento={this.alterarEstabelecimento}
+                            removerEstabelecimento={this.removerEstabelecimento} />
+                        )
+                      }
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
             </Col>
-          </Row>
-        }
-        {(!produtoShowForm && !showFormImage) &&
-
-          <Row>
-            {loading && <Alert color="success"  xs="12" sm="12" md="12" lg="12" xl="12" >carregando...</Alert>}
-
-            {(produtos.docs && !loading) &&
-              produtos.docs.map((produto, index) => <Produto produto={produto}
-                alterarProduto={this.alterarSituacaoProduto}
-                alterarImagem={this.alterarImagem}
-                formProduto={this.formProduto}
-                key={produto._id} />)
-            }
-            {(produtos.total === 0) && <Alert color="info" xs="12">
-              Nenhum produto foi encontrado. Tente outro filtro!</Alert>
-            }
-          </Row>
-        }
+          }
+        </Row>
 
       </div >
     )
   }
 }
 
-//export default Usuarios;
+//export default Estabelecimentos;
 
 function mapStateToProps(state) {
-  const { produtos } = state;
+  const { estabelecimentos, ramos, form } = state;
+
   return {
-    produtos
+    estabelecimentos,
+    ramos,
+    form
   };
 }
 
+
+//05   
+
+
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadProdutos: (filtros) => dispatch(produtosActions.getProdutos(filtros)),
-    onSetFiltros: (filtros) => dispatch(produtosActions.setFiltros(filtros)),
-    onAlterarProduto: (produto) => dispatch(produtosActions.produtoUpdate(produto)),
-    onShowForm: () => dispatch(produtosActions.showForm()),
-    onShowFormImage: () => dispatch(produtosActions.showFormImage()),
-    onPopularForm: (produto) => dispatch(produtosActions.popularForm(produto)),
-    onUploadImage: (produto) => dispatch(produtosActions.imagemUpload(produto))
+    onLoadEstabelecimentos: () => dispatch(estabelecimentoActions.getAll()),
+    onShowForm: () => dispatch(estabelecimentoActions.showForm()),
+    onFormUpload: () => dispatch(estabelecimentoActions.formUpload()),
+    onCreateEstabelecimento: estabelecimento => dispatch(estabelecimentoActions.estabelecimentoCreate(estabelecimento)),
+    onRemoveEstabelecimento: estabelecimento => dispatch(estabelecimentoActions.estabelecimentoRemove(estabelecimento)),
+    onUpdateEstabelecimento: estabelecimento => dispatch(estabelecimentoActions.estabelecimentoUpdate(estabelecimento)),
+    onPopularEstabelecimento: estabelecimento => dispatch(estabelecimentoActions.estabelecimentoGet(estabelecimento)),
+    onImagemUpload: estabelecimento => dispatch(estabelecimentoActions.imagemUpload(estabelecimento)),
+    onGetRamos: () => dispatch(ramoActions.getAll(true))
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Estabelecimentos);

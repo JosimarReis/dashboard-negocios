@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ramoActions } from "../../../_store/_actions";
 
-import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import FormRamo from './FormRamo'
 import { history } from '../../../_helpers';
@@ -17,9 +16,7 @@ function RamoRow(props) {
       <td>{ramo.descricao}</td>
       <td className="text-center"><Badge color={getBadge(ramo.situacao)}>{(ramo.situacao === true) ? 'Ativo' : 'Inativo'}</Badge></td>
       <td className="text-right">
-        <Link to={`/ramos/cadastrar`}>
-          <button className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
-        </Link>
+        <button onClick={() => props.novoRamo()} className="btn-square btn btn-ghost-primary btn-sm" title="Novo"><i className="fa fa-plus"></i></button>
         <button onClick={() => props.alterarRamo(ramo, false)} className="btn-square btn btn-ghost-warning btn-sm" title="Alterar dados"><i className="fa fa-pencil"></i></button>
         <button className="btn-square btn btn-ghost-danger btn-sm" title="Remover" ramo={ramo}
           onClick={() => props.removerRamo(ramo)}
@@ -98,10 +95,11 @@ class Ramos extends Component {
 
     return (
       <div className="animated fadeIn">
+        <FormRamo initialValues={ramos.ramoUpdated}
+          onSubmit={this.submit}
+          onCancel={this.props.onShowForm} show={ramos.ramoFormShow} />
         <Row xs="12" sm="12" md="12" lg="12" xl="12" >
-          <FormRamo initialValues={ramos.ramoUpdated}
-            onSubmit={this.submit}
-            onCancel={this.props.onShowForm} show={ramos.ramoFormShow} />
+
 
           {(!ramoFormShow && !ramoFormImage) &&
             <Col xs={12} xl={12}>
@@ -133,7 +131,9 @@ class Ramos extends Component {
                         ramos.items.map((ramo, index) =>
                           <RamoRow key={index} ramo={ramo}
                             alterarRamo={this.alterarRamo}
-                            removerRamo={this.removerRamo} />
+                            removerRamo={this.removerRamo}
+                            novoRamo={this.props.onShowForm}
+                          />
                         )
                       }
                     </tbody>

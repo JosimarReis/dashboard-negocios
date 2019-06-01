@@ -1,35 +1,49 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-
+import React from 'react';
 import {
-    Col, Row, FormGroup, Label, Button,
-    Card, CardHeader, CardBody, CardFooter
+    Alert,
+    Card,
+    CardBody,
+    CardHeader,
+    Col,
+    FormGroup,
+    Label,
+    Row,
+    CardFooter,
+    Button
 } from 'reactstrap';
-
-const FormEstabelecimento = (props) => {
-    const { handleSubmit, show } = props
+import { Field, reduxForm } from 'redux-form'
+//import { estabelecimentoActions } from '../../../_store/_actions';
+//ig/perreotwerkeo69/
+import listas from "../../../_config/listas";
+let RamoEstabelecimento = props => {
+    const { handleSubmit, show, error } = props
     return (
         show &&
         <div className="animated fadeIn">
             <form onSubmit={handleSubmit} className="form" >
-                <Col xs={12} sm={12}>
+
+                <Col xs="12" sm="11" md="9" lg="8" xl="5" >
                     <Card>
                         <CardHeader>
-                            <strong> {props.pass ? props.initialValues.nome : 'Produto'}</strong>
-                            <small> |
-                                {props.initialValues ? ' alterar' : ' novo'}
+                            <strong> {props.pass ? props.initialValues.nome : 'Estabelecimento'}</strong>
+                            <small> | {props.initialValues ? ' alterar' : ' novo'}
                             </small>
                         </CardHeader>
                         <CardBody>
                             <Row>
-                                <Col xs="8">
+                                <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="codbar">Código de Barras</Label>
-                                        <Field type="text" name="codbar" placeholder="Código de Barras"
-                                            component="input" className="form-control" required />
+                                        <Label htmlFor="ramo">Ramo de Atividade</Label>
+                                        <Field component="select" className="form-control"
+                                            name="ramo" >
+                                            {props.ramos.map((item, index) => <option value={item._id} key={item._id} >{item.nome}</option>)}
+
+                                        </Field>
                                     </FormGroup>
                                 </Col>
-                                <Col xs="4">
+                            </Row>
+                            <Row>
+                                <Col xs="12">
                                     <FormGroup>
                                         <Label htmlFor="situacao">Situação</Label>
                                         <Field component="select" className="form-control"
@@ -40,12 +54,24 @@ const FormEstabelecimento = (props) => {
                                         </Field>
                                     </FormGroup>
                                 </Col>
+
                             </Row>
+
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="produto">Nome do Produto</Label>
-                                        <Field type="text" name="produto" placeholder="Nome do produto"
+                                        <Label htmlFor="dados.fantasia">Fantasia</Label>
+                                        <Field type="text" name="dados.fantasia" placeholder="Fantasia da empresa"
+                                            component="input" className="form-control" required />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="dados.cnpj">CPF ou CNPJ</Label>
+                                        <Field type="text" name="dados.cnpj" placeholder="CPF ou CNPJ"
                                             component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
@@ -53,33 +79,79 @@ const FormEstabelecimento = (props) => {
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="marca">Marca do produto</Label>
-                                        <Field type="text" name="marca" placeholder="Marca do produto"
-                                            component="input" className="form-control" />
+                                        <Label htmlFor="email">E-mail</Label>
+                                        <Field type="text" name="email" placeholder="email@email.com"
+                                            component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="categoria">Categoria</Label>
-                                        <Field component="select" className="form-control" name="categoria" required>
-                                            <option value="">Selecione uma categoria</option>
-                                            <option value="AÇOUGUE">AÇOUGUE</option>
-                                            <option value="BAZAR">BAZAR</option>
-                                            <option value="BEBÊ">BEBÊ</option>
-                                            <option value="BEBIDAS">BEBIDAS</option>
-                                            <option value="CONGELADO">CONGELADO</option>
-                                            <option value="CONGELADOS">CONGELADOS</option>
-                                            <option value="ELETRO">ELETRO</option>
-                                            <option value="FRIOS E LATICÍNIOS">FRIOS E LATICÍNIOS</option>
-                                            <option value="HIGIENE E BELEZA">HIGIENE E BELEZA</option>
-                                            <option value="HORTIFRUTI">HORTIFRUTI</option>
-                                            <option value="INFANTIL">INFANTIL</option>
-                                            <option value="LIMPEZA">LIMPEZA</option>
-                                            <option value="MERCEARIA">MERCEARIA</option>
-                                            <option value="PADARIA">PADARIA</option>
-                                            <option value="PETSHOP">PETSHOP</option>
+                                        <Label htmlFor="telefone">Telefone</Label>
+                                        <Field type="text" name="telefone" placeholder="(00) 0 0000-0000"
+                                            component="input" className="form-control" required />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="endereco.rua">Logradouro</Label>
+                                        <Field type="text" name="endereco.rua" placeholder=""
+                                            component="input" className="form-control" required />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="endereco.numero">Número</Label>
+                                        <Field type="text" name="endereco.numero" placeholder="Digite o número se tiver"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="endereco.bairro">Bairro</Label>
+                                        <Field type="text" name="endereco.bairro" placeholder="Bairro"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="endereco.referencia">Referêcia</Label>
+                                        <Field type="text" name="endereco.referencia" placeholder="Quais os pontos de referencia?"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="cidade.cep">CEP</Label>
+                                        <Field type="text" name="cidade.cep" placeholder="Digite o CEP"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="cidade.estado.sigla">Estado</Label>
+                                        <Field component="select" className="form-control"
+                                            name="cidade.estado.sigla" >
+                                            <option>Selecione um estado</option>
+                                            {listas.estados.map((item, index) => <option value={item.sigla} key={item.sigla} >{item.nome}</option>)}
+
                                         </Field>
                                     </FormGroup>
                                 </Col>
@@ -87,68 +159,37 @@ const FormEstabelecimento = (props) => {
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="embalagem">Embalagem</Label>
-                                        <Field type="text" name="embalagem" placeholder="Embalagem do produto: unidade, pacote, caixa"
-                                            component="input" className="form-control" />
+                                        <Label htmlFor="cidade.cidade._id">Cidade</Label>
+                                        <Field component="select" className="form-control"
+                                            name="cidade.cidade._id" >
+                                            <option>Selecione um estado</option>
+
+                                        </Field>
                                     </FormGroup>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs="12">
+                                <Col xs="6">
                                     <FormGroup>
-                                        <Label htmlFor="quantidade_embalagem">Quantidade em cada embalagem</Label>
-                                        <Field type="text" name="quantidade_embalagem" placeholder="Quantidade em cada embalagem"
-                                            component="input" className="form-control" />
+                                        <Label htmlFor="endereco.geo.latitude">Latitude</Label>
+                                        <Field type="text" name="endereco.geo.latitude" placeholder="Latitude do estabelecimento"
+                                            component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
+                                <Col xs="6">
                                     <FormGroup>
-                                        <Label htmlFor="peso">Peso do Produto</Label>
-                                        <Field type="text" name="peso" placeholder="peso do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="ncm">NCM</Label>
-                                        <Field type="text" name="ncm" placeholder="NCM do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_codigo">Código CEST</Label>
-                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_descricao">Descrição CEST</Label>
-                                        <Field type="text" name="cest_descricao" placeholder="Descrição CEST do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_codigo">Código CEST</Label>
-                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
-                                            component="input" className="form-control" />
+                                        <Label htmlFor="endereco.geo.longitude">Longitude</Label>
+                                        <Field type="text" name="endereco.geo.longitude" placeholder="Longitude do estabelecimento"
+                                            component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
                             </Row>
 
-
+                            {error && <Row>
+                                <Col xs="12">
+                                    <Alert color="danger">{error}</Alert>
+                                </Col>
+                            </Row>}
                         </CardBody>
                         <CardFooter>
                             <Field component={Button} name="submit" type="submit" size="sm"
@@ -166,5 +207,6 @@ const FormEstabelecimento = (props) => {
     )
 }
 
-//, enableReinitialize: true
-export default reduxForm({ form: 'formProduto', enableReinitialize: true })(FormEstabelecimento)
+
+
+export default reduxForm({ form: 'usuario', enableReinitialize: true })(RamoEstabelecimento)

@@ -9,9 +9,26 @@ export const produtosActions = {
     showForm,
     popularForm,
     showFormImage,
-    imagemUpload
+    imagemUpload,
+    produtoCodBar,
+    produtoCreate,
+    produtoExiste
 }
+function produtoCodBar(codBar) {
+    return dispatch => {
+        produtoService.produtoCodBar(codBar)
+            .then(
+                produto => {
+                    dispatch({
+                        type: produtosConstants.PRODUTO_CODBAR,
+                        codbar: (produto.codbar === this.codbar) ? true : false
+                    })
 
+                },
+                error => console.log(error)
+            )
+    }
+}
 function getProdutos(filtros) {
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_GETALL_REQUEST })
@@ -45,8 +62,23 @@ function produtoUpdate(produto) {
                 error => console.log(error)
             )
     }
+}
+function produtoCreate(produto) {
+    return dispatch => {
+
+        produtoService.produtoCreate(produto)
+            .then(
+                produto => {
+                    dispatch({
+                        type: produtosConstants.PRODUTO_CREATE,
+                        produto
+                    })
 
 
+                },
+                error => console.log(error)
+            )
+    }
 }
 function imagemUpload(produto) {
     return dispatch => {
@@ -81,6 +113,7 @@ function setFiltros(filtros) {
         filtros.marcas = filtros.marcas.filter((item) => (item !== 'todos'))
 
     return dispatch => {
+        localStorage.setItem('filtros', JSON.stringify(filtros))
         dispatch({ type: produtosConstants.PRODUTO_FILTROS, filtros })
 
         dispatch({ type: produtosConstants.PRODUTO_GETALL_REQUEST })
@@ -103,6 +136,11 @@ function setFiltros(filtros) {
 function showForm() {
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_FORM_SHOW })
+    }
+}
+function produtoExiste(existe = false) {
+    return dispatch => {
+        dispatch({ type: produtosConstants.PRODUTO_EXISTE, existe })
     }
 }
 function showFormImage() {
