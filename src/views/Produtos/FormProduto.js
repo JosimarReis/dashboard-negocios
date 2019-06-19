@@ -5,7 +5,7 @@ import {
     Card, CardHeader, CardBody, CardFooter
 } from 'reactstrap';
 import asyncValidate from "./asyncValidate";
-
+import listas from '../../_config/listas'
 
 const validate = values => {
     const errors = {}
@@ -48,7 +48,7 @@ const renderField = ({
 } props 
  */
 const FormProduto = (props) => {
-    const { handleSubmit, show, error, pristine, submitting, existe } = props
+    const { handleSubmit, show, error, pristine, submitting } = props
     ///console.log(props)
     return (
         show &&
@@ -73,7 +73,7 @@ const FormProduto = (props) => {
 
                                     <FormGroup>
                                         <Label htmlFor="codbar">Código de Barras</Label>
-                                        <Field type="text" name="codbar" label="Código de Barras" existe={existe}
+                                        <Field type="text" name="codbar" label="Código de Barras"
                                             component={renderField} classN="form-control" required />
                                     </FormGroup>
                                 </Col>
@@ -110,25 +110,33 @@ const FormProduto = (props) => {
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="categoria">Categoria</Label>
-                                        <Field component="select" className="form-control" name="categoria" required>
-                                            <option value="">Selecione uma categoria</option>
-                                            <option value="AÇOUGUE">AÇOUGUE</option>
-                                            <option value="BAZAR">BAZAR</option>
-                                            <option value="BEBÊ">BEBÊ</option>
-                                            <option value="BEBIDAS">BEBIDAS</option>
-                                            <option value="CONGELADO">CONGELADO</option>
-                                            <option value="CONGELADOS">CONGELADOS</option>
-                                            <option value="ELETRO">ELETRO</option>
-                                            <option value="FRIOS E LATICÍNIOS">FRIOS E LATICÍNIOS</option>
-                                            <option value="HIGIENE E BELEZA">HIGIENE E BELEZA</option>
-                                            <option value="HORTIFRUTI">HORTIFRUTI</option>
-                                            <option value="INFANTIL">INFANTIL</option>
-                                            <option value="LIMPEZA">LIMPEZA</option>
-                                            <option value="MERCEARIA">MERCEARIA</option>
-                                            <option value="PADARIA">PADARIA</option>
-                                            <option value="PETSHOP">PETSHOP</option>
+                                        <Label htmlFor="grupo">Grupo</Label>
+                                        <Field component="select" className="form-control" name="grupo" required>
+                                            <option value="">Selecione um grupo</option>
+                                            {listas.grupos.map((item, index) =>
+                                                <option value={item.nome} key={index}>{item.nome}</option>
+                                            )}
                                         </Field>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="categoria">Categoria</Label>
+                                        <Field type="text" name="categoria" placeholder="categoria do produto"
+                                        AutoComplete="on"
+                                            component="input" className="form-control" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="tags">Tags | <small>Separe as tags com ','</small></Label>
+                                        <Field type="text" name="tags" placeholder="tag1, tag2, tagQualquer"
+                                        AutoComplete="on"
+                                            component="input" className="form-control" />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -150,42 +158,8 @@ const FormProduto = (props) => {
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="peso">Peso do Produto</Label>
-                                        <Field type="text" name="peso" placeholder="peso do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="ncm">NCM</Label>
-                                        <Field type="text" name="ncm" placeholder="NCM do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_codigo">Código CEST</Label>
-                                        <Field type="text" name="cest_codigo" placeholder="Código CEST do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs="12">
-                                    <FormGroup>
-                                        <Label htmlFor="cest_descricao">Descrição CEST</Label>
-                                        <Field type="text" name="cest_descricao" placeholder="Descrição CEST do produto"
-                                            component="input" className="form-control" />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
+                           
+                            
 
                         </CardBody>
                         <CardFooter>

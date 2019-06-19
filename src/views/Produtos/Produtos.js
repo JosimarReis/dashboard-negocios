@@ -9,14 +9,13 @@ import {
 import FormFiltros from './FormFiltros';
 import FormProduto from './FormProduto'
 import FormImage from './FormImage';
-import { SubmissionError } from 'redux-form';
 
 class Produtos extends Component {
   componentDidMount() {
     let filtroInicial = {
       listar: 'todos',
       situacao: 'todos',
-      categorias: ['todos'],
+      grupos: ['todos'],
       marcas: ['todos'],
       limit: 30,
       order: 'asc',
@@ -40,6 +39,7 @@ class Produtos extends Component {
     this.props.onAlterarProduto(produto);
   }
   formProduto = (produto) => {
+
     this.props.onPopularForm(produto)
     if (!this.props.produtos.produtoShowForm)
       this.props.onShowForm()
@@ -73,8 +73,8 @@ class Produtos extends Component {
   }
 
   salvarProduto = (values) => {
-    console.log(values)
-    //new SubmissionError({})
+
+    values.tags = values.tags.split(',') // transforma as tags em array
 
     this.produtoCodBar(values.codbar)
 
@@ -145,7 +145,6 @@ class Produtos extends Component {
 
           <FormProduto
             show={produtoShowForm}
-            existe={produtos.existe}
             initialValues={produtos.produto}
             onCancel={this.props.onShowForm}
             onSubmit={this.salvarProduto}

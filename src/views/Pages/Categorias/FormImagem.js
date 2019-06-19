@@ -24,7 +24,7 @@ const FileInput = ({
     );
 };
 
-const FormImage = (props) => {
+const FormImagem = (props) => {
     const { handleSubmit, show } = props
     
     return (
@@ -33,9 +33,9 @@ const FormImage = (props) => {
             <form onSubmit={handleSubmit} className="form" >
                 <Card>
                     <CardHeader>
-                        <strong> {props.initialValues.produto}</strong>
+                        <strong> {props.initialValues.nome}</strong>
                         <small> |
-                           troca de imagem
+                           Foto do ramo
                             </small>
                     </CardHeader>
                     <CardBody>
@@ -65,4 +65,4 @@ const FormImage = (props) => {
 }
 
 //, enableReinitialize: true
-export default reduxForm({ form: 'formImage', enableReinitialize: true })(FormImage)
+export default reduxForm({ form: 'formImage', enableReinitialize: true })(FormImagem)

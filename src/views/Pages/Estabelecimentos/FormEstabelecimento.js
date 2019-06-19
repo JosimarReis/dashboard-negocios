@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+
     Alert,
     Card,
     CardBody,
@@ -11,12 +12,45 @@ import {
     CardFooter,
     Button
 } from 'reactstrap';
-import { Field, reduxForm } from 'redux-form'
-//import { estabelecimentoActions } from '../../../_store/_actions';
-//ig/perreotwerkeo69/
-import listas from "../../../_config/listas";
-let RamoEstabelecimento = props => {
+import { Field, reduxForm, change } from 'redux-form'
+import asyncValidate from "./asyncValidate";
+const validate = (values) => {
+    const errors = {}
+    if (!values.ramo) {
+        errors.codbar = 'Obrigatório'
+    }
+
+    if (values.dados) {
+        let { razaoSocial } = values.dados
+        if (!razaoSocial)
+            errors.razaoSocial = 'Obrigatório'
+    }
+    if (!values.telefones) {
+        errors.telefones = 'Obrigatório'
+    }
+
+    if (values.endereco) {
+        const { rua } = values.endereco;
+        if (!rua)
+            errors.endereco.rua = 'Obrigatório'
+
+    }
+
+    return errors
+}
+
+let FormEstabelecimento = props => {
     const { handleSubmit, show, error } = props
+    /**
+        const geo = () => {
+            const location = window.navigator && window.navigator.geolocation
+    
+            location.getCurrentPosition((position) => {
+                props.dispatch(change('formEstabelecimento', 'endereco.geo.latitude', position.coords.latitude))
+                props.dispatch(change('formEstabelecimento', 'endereco.geo.longitude', position.coords.longitude))
+            })
+        }
+     */
     return (
         show &&
         <div className="animated fadeIn">
@@ -25,7 +59,7 @@ let RamoEstabelecimento = props => {
                 <Col xs="12" sm="11" md="9" lg="8" xl="5" >
                     <Card>
                         <CardHeader>
-                            <strong> {props.pass ? props.initialValues.nome : 'Estabelecimento'}</strong>
+                            <strong> Estabelecimento</strong>
                             <small> | {props.initialValues ? ' alterar' : ' novo'}
                             </small>
                         </CardHeader>
@@ -55,6 +89,15 @@ let RamoEstabelecimento = props => {
                                     </FormGroup>
                                 </Col>
 
+                            </Row>
+                            <Row>
+                                <Col xs="12">
+                                    <FormGroup>
+                                        <Label htmlFor="dados.razaoSocial">Razão Social</Label>
+                                        <Field type="text" name="dados.razaoSocial" placeholder="Razão Social da empresa"
+                                            component="input" className="form-control" required />
+                                    </FormGroup>
+                                </Col>
                             </Row>
 
                             <Row>
@@ -88,8 +131,8 @@ let RamoEstabelecimento = props => {
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="telefone">Telefone</Label>
-                                        <Field type="text" name="telefone" placeholder="(00) 0 0000-0000"
+                                        <Label htmlFor="telefones">Telefone</Label>
+                                        <Field type="text" name="telefones" placeholder="(00) 0 0000-0000"
                                             component="input" className="form-control" required />
                                     </FormGroup>
                                 </Col>
@@ -147,24 +190,18 @@ let RamoEstabelecimento = props => {
                                 <Col xs="12">
                                     <FormGroup>
                                         <Label htmlFor="cidade.estado.sigla">Estado</Label>
-                                        <Field component="select" className="form-control"
-                                            name="cidade.estado.sigla" >
-                                            <option>Selecione um estado</option>
-                                            {listas.estados.map((item, index) => <option value={item.sigla} key={item.sigla} >{item.nome}</option>)}
-
-                                        </Field>
+                                        <Field type="text" component="input" className="form-control"
+                                            name="cidade.estado.sigla" disabled={true} />
                                     </FormGroup>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs="12">
                                     <FormGroup>
-                                        <Label htmlFor="cidade.cidade._id">Cidade</Label>
-                                        <Field component="select" className="form-control"
-                                            name="cidade.cidade._id" >
-                                            <option>Selecione um estado</option>
+                                        <Label htmlFor="cidade.nome">Cidade</Label>
+                                        <Field type="text" component="input" className="form-control"
+                                            name="cidade.nome" disabled={true} />
 
-                                        </Field>
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -178,7 +215,17 @@ let RamoEstabelecimento = props => {
                                 </Col>
                                 <Col xs="6">
                                     <FormGroup>
-                                        <Label htmlFor="endereco.geo.longitude">Longitude</Label>
+
+                                        <Label htmlFor="endereco.geo.longitude">Longitude
+                                        <button onClick={() => {
+                                                const location = window.navigator && window.navigator.geolocation
+
+                                                location.getCurrentPosition((position) => {
+                                                    change('formEstabelecimento', 'endereco.geo.latitude', position.coords.latitude)
+                                                    change('formEstabelecimento', 'endereco.geo.longitude', position.coords.longitude)
+                                                })
+                                            }} className="btn-square btn btn-danger btn-sm"> <i className="fa close"></i> Usar Atual</button>
+                                        </Label>
                                         <Field type="text" name="endereco.geo.longitude" placeholder="Longitude do estabelecimento"
                                             component="input" className="form-control" required />
                                     </FormGroup>
@@ -209,4 +256,10 @@ let RamoEstabelecimento = props => {
 
 
 
-export default reduxForm({ form: 'usuario', enableReinitialize: true })(RamoEstabelecimento)
+export default reduxForm({
+    form: 'formEstabelecimento',
+    validate,
+    asyncBlurFields: 'cidade.cep',
+    asyncValidate,
+    enableReinitialize: true
+})(FormEstabelecimento)

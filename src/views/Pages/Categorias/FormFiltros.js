@@ -1,9 +1,9 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-
+import listas from "../../../_config/listas";
 import {
     Col, Row, FormGroup, Label, Button,
-    Pagination, PaginationItem
+   
 } from 'reactstrap';
 
 const FormFiltros = (props) => {
@@ -15,7 +15,7 @@ const FormFiltros = (props) => {
                 <Row>
                     <Col xs="2">
                         <FormGroup>
-                            <Label htmlFor="situacao">Quais listar?</Label>
+                            <Label htmlFor="situacao">Situação</Label>
                             <Field component="select" className="form-control" name="situacao">
                                 <option value="todos">Todos</option>
                                 <option value={true}>Disponíveis</option>
@@ -25,37 +25,15 @@ const FormFiltros = (props) => {
                     </Col>
                     <Col xs="3">
                         <FormGroup>
-                            <Label htmlFor="categorias">Categorias</Label>
-                            <Field component="select" className="form-control" name="categorias" multiple={true}>
-                                <option value="todos">Todos</option>
-                                <option value="">Sem categorias</option>
-                                <option value="AÇOUGUE">AÇOUGUE</option>
-                                <option value="BAZAR">BAZAR</option>
-                                <option value="BEBÊ">BEBÊ</option>
-                                <option value="BEBIDAS">BEBIDAS</option>
-                                <option value="CONGELADO">CONGELADO</option>
-                                <option value="CONGELADOS">CONGELADOS</option>
-                                <option value="ELETRO">ELETRO</option>
-                                <option value="FRIOS E LATICÍNIOS">FRIOS E LATICÍNIOS</option>
-                                <option value="HIGIENE E BELEZA">HIGIENE E BELEZA</option>
-                                <option value="HORTIFRUTI">HORTIFRUTI</option>
-                                <option value="INFANTIL">INFANTIL</option>
-                                <option value="LIMPEZA">LIMPEZA</option>
-                                <option value="MERCEARIA">MERCEARIA</option>
-                                <option value="PADARIA">PADARIA</option>
-                                <option value="PETSHOP">PETSHOP</option>
+                            <Label htmlFor="grupo">Grupo</Label>
+                            <Field component="select" className="form-control" name="grupo" multiple={true}>
+                            <option value="todos">Todos</option>
+                                
+                                {listas.grupos.map((item, index )=> <option value={item.nome}>{item.nome}</option>)}
                             </Field>
                         </FormGroup>
                     </Col>
-                    <Col xs="3">
-                        <FormGroup>
-                            <Label htmlFor="marcas">Marcas</Label>
-                            <Field component="select" className="form-control" name="marcas" multiple={true}>
-                                <option value="todos">Todos</option>
-                                <option value="">Sem marcas</option>
-                            </Field>
-                        </FormGroup>
-                    </Col>
+                    
                     <Col xs="2">
                         <FormGroup>
                             <Label htmlFor="limit">Ítens por página</Label>
@@ -94,21 +72,7 @@ const FormFiltros = (props) => {
                         <FormGroup>
 
                             <Label>&nbsp;</Label>
-                            <Pagination>
-
-                                <PaginationItem>
-                                    <Button disabled={props.page === 1} onClick={() => props.prevPage()}>{'<'}</Button>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <Button >
-                                        {props.page}/{props.pages}
-                                    </Button>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <Button disabled={props.page === props.pages} onClick={() => props.nextPage()}>{'>'}</Button>
-                                </PaginationItem>
-
-                            </Pagination>
+                            
                         </FormGroup>
 
                     </Col>

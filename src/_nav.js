@@ -4,7 +4,7 @@ export default {
       name: 'Dashboard',
       url: '/',
       icon: 'icon-speedometer',
-      
+
     },
     {
       title: true,
@@ -18,8 +18,9 @@ export default {
     {
       name: 'Produtos',
       url: '/produtos',
-      icon: 'fa fa-tags',
+      icon: 'fa fa-tag',
     },
+    
     {
       title: true,
       name: 'Operacional',
@@ -39,8 +40,12 @@ export default {
       url: '/ramos',
       icon: 'fa fa-sitemap fa-lg ',
     },
-   
-    
-   
+    {
+      name: 'Estabelecimentos',
+      url: '/estabelecimentos',
+      icon: 'icon-bell',
+    },
+
+
   ],
 };

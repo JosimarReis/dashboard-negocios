@@ -5,6 +5,7 @@ import { ramoActions } from "../../../_store/_actions";
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import FormRamo from './FormRamo'
 import { history } from '../../../_helpers';
+
 function RamoRow(props) {
   const ramo = props.ramo
   const getBadge = (situacao) => {
@@ -98,6 +99,7 @@ class Ramos extends Component {
         <FormRamo initialValues={ramos.ramoUpdated}
           onSubmit={this.submit}
           onCancel={this.props.onShowForm} show={ramos.ramoFormShow} />
+          
         <Row xs="12" sm="12" md="12" lg="12" xl="12" >
 
 

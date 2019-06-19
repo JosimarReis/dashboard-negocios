@@ -2,7 +2,7 @@ import { produtosConstants } from '../_constants';
 
 let filtros = JSON.parse(localStorage.getItem('filtros'));
 const filtrosInitial = filtros ? filtros : {}
-export function produtos(state = { produtoShowForm: false, showFormImage: false, existe: false, filtros: filtrosInitial }, action) {
+export function produtos(state = { produtoShowForm: false, showFormImage: false, filtros: filtrosInitial }, action) {
   switch (action.type) {
 
     case produtosConstants.PRODUTO_GETALL_REQUEST:
@@ -70,11 +70,7 @@ export function produtos(state = { produtoShowForm: false, showFormImage: false,
         ...state,
         categorias: action.categorias,
       }
-    case produtosConstants.PRODUTO_EXISTE:
-      return {
-        ...state,
-        existe: action.existe
-      }
+
     default:
       return state
   }

@@ -1,6 +1,6 @@
 import { estabelecimentoConstants } from '../_constants';
 
-export function estabelecimentos(state = { estabelecimentoFormShow: false, estabelecimentoFormImage: false }, action) {
+export function estabelecimentos(state = { estabelecimentoFormShow: false }, action) {
   switch (action.type) {
 
     case estabelecimentoConstants.ESTABELECIMENTO_GETALL:
@@ -13,16 +13,13 @@ export function estabelecimentos(state = { estabelecimentoFormShow: false, estab
         ...state,
         estabelecimentoFormShow: !state.estabelecimentoFormShow
       }
-    case estabelecimentoConstants.ESTABELECIMENTO_FORM_UPLOAD:
-      return {
-        ...state,
-        estabelecimentoFormImage: !state.estabelecimentoFormImage
-      }
+
     case estabelecimentoConstants.ESTABELECIMENTO_GET:
       return {
         ...state,
-        estabelecimentoUpdated: action.estabelecimento
+        estabelecimento: action.estabelecimento
       }
+
 
     default:
       return state

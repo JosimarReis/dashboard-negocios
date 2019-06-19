@@ -11,8 +11,7 @@ export const produtosActions = {
     showFormImage,
     imagemUpload,
     produtoCodBar,
-    produtoCreate,
-    produtoExiste
+    produtoCreate
 }
 function produtoCodBar(codBar) {
     return dispatch => {
@@ -102,6 +101,11 @@ function setFiltros(filtros) {
     filtros.pagina = parseInt(filtros.pagina)
     filtros.limit = parseInt(filtros.limit)
 
+    if (!filtros.grupos || filtros.grupos.filter((item) => item === 'todos').length === 1)
+        delete (filtros.grupos)
+    else
+        filtros.grupos = filtros.grupos.filter((item) => (item !== 'todos'))
+    
     if (!filtros.categorias || filtros.categorias.filter((item) => item === 'todos').length === 1)
         delete (filtros.categorias)
     else
@@ -138,17 +142,17 @@ function showForm() {
         dispatch({ type: produtosConstants.PRODUTO_FORM_SHOW })
     }
 }
-function produtoExiste(existe = false) {
-    return dispatch => {
-        dispatch({ type: produtosConstants.PRODUTO_EXISTE, existe })
-    }
-}
+
 function showFormImage() {
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_IMAGE_FORM_SHOW })
     }
 }
 function popularForm(produto) {
+    //tags de array para string no formado "tag1, tag2, tag3"
+    if(produto.tags !== []){
+        produto.tags = produto.tags.reduce((item, next)=> item!==''?`${item}, ${next}`:next,'')
+      }
     return dispatch => {
         dispatch({ type: produtosConstants.PRODUTO_POPULAR_FORM, produto })
     }

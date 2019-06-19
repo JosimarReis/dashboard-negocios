@@ -14,7 +14,8 @@ export const userActions = {
     userGet,
     pass,
     imagemUpload,
-    formUpload
+    formUpload,
+    submitted
 };
 
 function login(email, senha) {
@@ -27,6 +28,7 @@ function login(email, senha) {
                         type: userConstants.USER_LOGIN,
                         user
                     })
+
                 },
                 error => console.log(error)
             )
@@ -36,6 +38,11 @@ function login(email, senha) {
 function showForm() {
     return dispatch => {
         dispatch({ type: userConstants.USER_FORM_SHOW })
+    }
+}
+function submitted() {
+    return dispatch => {
+        dispatch({ type: userConstants.USER_SUBMIT })
     }
 }
 function pass() {

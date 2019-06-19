@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import listas from '../../_config/listas'
 
 import {
     Col, Row, FormGroup, Label, Button,
@@ -25,25 +26,14 @@ const FormFiltros = (props) => {
                     </Col>
                     <Col xs="3">
                         <FormGroup>
-                            <Label htmlFor="categorias">Categorias</Label>
-                            <Field component="select" className="form-control" name="categorias" multiple={true}>
+                            <Label htmlFor="grupos">Grupos</Label>
+                            <Field component="select" className="form-control" name="grupos" multiple={true}>
                                 <option value="todos">Todos</option>
-                                <option value="">Sem categorias</option>
-                                <option value="AÇOUGUE">AÇOUGUE</option>
-                                <option value="BAZAR">BAZAR</option>
-                                <option value="BEBÊ">BEBÊ</option>
-                                <option value="BEBIDAS">BEBIDAS</option>
-                                <option value="CONGELADO">CONGELADO</option>
-                                <option value="CONGELADOS">CONGELADOS</option>
-                                <option value="ELETRO">ELETRO</option>
-                                <option value="FRIOS E LATICÍNIOS">FRIOS E LATICÍNIOS</option>
-                                <option value="HIGIENE E BELEZA">HIGIENE E BELEZA</option>
-                                <option value="HORTIFRUTI">HORTIFRUTI</option>
-                                <option value="INFANTIL">INFANTIL</option>
-                                <option value="LIMPEZA">LIMPEZA</option>
-                                <option value="MERCEARIA">MERCEARIA</option>
-                                <option value="PADARIA">PADARIA</option>
-                                <option value="PETSHOP">PETSHOP</option>
+                                <option value="">Sem grupos</option>
+                                            {listas.grupos.map((item, index) =>
+                                                <option value={item.nome} key={index}>{item.nome}</option>
+                                            )}
+                             
                             </Field>
                         </FormGroup>
                     </Col>
@@ -61,16 +51,8 @@ const FormFiltros = (props) => {
                         <FormGroup>
                             <Label htmlFor="limit">Ítens por página</Label>
                             <Field component="select" className="form-control" name="limit">
-                                <option value={15}>15</option>
-                                <option value={30}>30</option>
-                                <option value={45}>45</option>
-                                <option value={60}>60</option>
-                                <option value={90}>90</option>
-                                <option value={150}>150</option>
-                                <option value={200}>200</option>
-                                <option value={300}>300</option>
-                                <option value={500}>500</option>
-                                <option value={1000}>1000</option>
+                                {[15,30,45,60,90,150,200,300,500,1000]
+                                    .map((item,index) => <option value={item} key={index}>{item}</option>)}
                             </Field>
                         </FormGroup>
                     </Col>

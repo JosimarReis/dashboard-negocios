@@ -11,4 +11,5 @@ export const userConstants = {
     USER_FORM_SHOW: 'USER_FORM_SHOW',
     USER_PASS: 'USER_PASS',
     USER_FORM_UPLOAD: 'USER_FORM_UPLOAD',
+    USER_SUBMIT:'USER_SUBMIT'
 };

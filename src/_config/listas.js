@@ -28,4 +28,21 @@ export default {
         { "nome": "Sergipe", "sigla": "SE" },
         { "nome": "Tocantins", "sigla": "TO" }
     ],
+    grupos:[
+        {"nome":"AÇOUGUE"},
+        {"nome":"BAZAR"},
+        {"nome":"BEBÊ"},
+        {"nome":"BEBIDAS"},
+        {"nome":"CONGELADO"},
+        {"nome":"CONGELADOS"},
+        {"nome":"ELETRO"},
+        {"nome":"FRIOS E LATICÍNIOS"},
+        {"nome":"HIGIENE E BELEZA"},
+        {"nome":"HORTIFRUTI"},
+        {"nome":"INFANTIL"},
+        {"nome":"LIMPEZA"},
+        {"nome":"MERCEARIA"},
+        {"nome":"PADARIA"},
+        {"nome":"PETSHOP"}
+    ]
 }

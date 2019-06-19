@@ -3,60 +3,35 @@ import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { userActions } from "../../../_store/_actions";
+//import { history } from '../../../_helpers';
 
 import {
-  Button, Card, CardBody, CardGroup, Col, Container, Form, Input,
-  InputGroup, InputGroupAddon, InputGroupText, Row
+  Button, Card, CardBody, CardGroup, Col, Container, Row
 } from 'reactstrap';
+import FormLogin from './FormLogin';
 
 
 class Login extends Component {
   constructor(props) {
     super(props)
     //reset status login
-    this.props.dispatch(userActions.logout())
-
-    this.state = {
-      email: '',
-      senha: '',
-      submitted: false
-    }
-
-
-    this.handleChange = this.handleChange.bind(this);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.props.onLogout()
 
   }
 
+  onSubmit = values => {
+    const { email, senha } = values;
+    this.props.onLogin(email, senha)
 
+    this.props.history.push("/");
 
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    this.setState({ submitted: true });
-    const { email, senha } = this.state;
-    const { dispatch } = this.props;
-    if (email && senha) {
-      dispatch(userActions.login(email, senha));
-      this.props.history.push("/");
-    }
 
   }
 
 
   render() {
-    const { loggingIn } = this.props;
-    const { email, senha, submitted } = this.state;
-
-
-    return (
+    
+        return (
       <div className="app flex-row align-items-center">
 
         <Container>
@@ -65,45 +40,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form name="form" onSubmit={this.handleSubmit}>
-                      <h1>Login</h1>
-                      <p className="text-muted">Entre com seus dados de acesso</p>
-                      <InputGroup className={'mb-3 form-group' + (submitted && !email ? ' has-error' : '')}>
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="email" placeholder="E-mail" name="email"
-                          value={email} onChange={this.handleChange} />
-                        {submitted && !email &&
-                          <div className="help-block">Digite seu e-mail</div>
-                        }
-                      </InputGroup>
-                      <InputGroup className="mb-4">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-lock"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="password" placeholder="Senha" name="senha"
-                          value={senha} onChange={this.handleChange} />
-                        {submitted && !senha &&
-                          <div className="help-block">Digite sua senha</div>
-                        }
-                      </InputGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Button color="primary" className="px-4">Entrar</Button>
-                          {loggingIn &&
-                            'carregando'
-                          }
-                        </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Esqueceu a senha?</Button>
-                        </Col>
-                      </Row>
-                    </Form>
+                    <FormLogin onSubmit={this.onSubmit} />
                   </CardBody>
                 </Card>
                 <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
@@ -127,13 +64,20 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { loggingIn, user } = state.authentication;
+  const { loggingIn, user, submitted } = state.authentication;
   return {
     loggingIn,
-    user
+    user,
+    submitted
   };
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: (email, senha) => dispatch(userActions.login(email, senha)),
+    onLogout: () => dispatch(userActions.logout())
+  }
+}
 //const connectedLoginPage = connect(mapStateToProps)(Login);
 //export { connectedLoginPage as Login }; 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

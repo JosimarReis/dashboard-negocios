@@ -32,7 +32,7 @@ const Produtos = (props) => {
                     <img src={imagem} style={styleImage} alt={props.produto.produto} />
                     <p>{props.produto.situacao}
                         Codigo de barras: {props.produto.codbar}
-                        <br />Categoria: {props.produto.categoria}
+                        <br />{props.produto.grupo} {props.produto.categoria&& `| ${props.produto.categoria}`}
                         <br />Marca: {props.produto.marca ? props.produto.marca : '--'}
                         <br />Embalagem: {props.produto.embalagem}
                     </p>
