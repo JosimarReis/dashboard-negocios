@@ -129,7 +129,6 @@ class Produtos extends Component {
     const { produtos } = this.props
     const { loading, produtoShowForm, showFormImage } = produtos
 
-    console.log(produtos)
     return (
 
       <div className="animated fadeIn" >
