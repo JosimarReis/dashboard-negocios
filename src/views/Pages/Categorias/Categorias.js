@@ -113,6 +113,7 @@ class Categorias extends Component {
 
     const { categorias } = this.props;
     const { categoriaFormShow, categoriaFormImage } = categorias
+    const page = 1, pages = 1
     if (categorias.items) {
       page = categorias.items.page
       pages = categorias.items.pages
