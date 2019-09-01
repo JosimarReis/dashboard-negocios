@@ -1,7 +1,0 @@
-export * from './alert.constants'
-export * from './user.constants'
-export * from './ramo.constants'
-export * from './produtos.constants'
-export * from './estabelecimento.constants'
-export * from './usuarioEstabelecimento.constants'
-export * from './categoria.constants'
